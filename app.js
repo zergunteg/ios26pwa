@@ -4,6 +4,19 @@ blurLayer.className = "appbar-blur-layer";
 blurLayer.innerHTML = Array.from({ length: 20 }, (_, i) => `<span style="--step: ${i}"></span>`).join("");
 header.appendChild(blurLayer);
 
+const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+const darkSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+const syncThemeColor = () => {
+  if (!themeColorMeta) return;
+  themeColorMeta.setAttribute("content", darkSchemeQuery.matches ? "#000000" : "#ffffff");
+};
+syncThemeColor();
+if (typeof darkSchemeQuery.addEventListener === "function") {
+  darkSchemeQuery.addEventListener("change", syncThemeColor);
+} else if (typeof darkSchemeQuery.addListener === "function") {
+  darkSchemeQuery.addListener(syncThemeColor);
+}
+
 const syncScrollState = () => {
   document.body.classList.toggle("scrolled", window.scrollY > 0);
 };
