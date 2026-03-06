@@ -40,6 +40,9 @@
 
 * {
   box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 html,
@@ -149,7 +152,30 @@ body {
 }
 
 .close-btn:active {
-  transform: translateY(-50%) scale(0.96);
+  transform: translateY(-50%);
+}
+
+.close-btn.press-bounce {
+  animation: close-btn-bounce 640ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+@keyframes close-btn-bounce {
+  0% {
+    transform: translateY(-50%) scale(1);
+    filter: brightness(1);
+  }
+  38% {
+    transform: translateY(-50%) scale(1.1);
+    filter: brightness(1.22);
+  }
+  65% {
+    transform: translateY(-50%) scale(0.98);
+    filter: brightness(1.06);
+  }
+  100% {
+    transform: translateY(-50%) scale(1);
+    filter: brightness(1);
+  }
 }
 
 .title {
@@ -183,7 +209,7 @@ body.scrolled .title {
 
 .screen {
   min-height: calc(100vh - env(safe-area-inset-top) - var(--appbar-height));
-  padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px 40px;
+  padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px calc(56px + env(safe-area-inset-bottom) + 48px);
 }
 
 .content-title {
@@ -243,6 +269,26 @@ body.scrolled .content-title {
 
 .card + .card {
   margin-top: 20px;
+}
+
+.refresh-btn {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: calc(env(safe-area-inset-bottom) + 24px);
+  height: 56px;
+  border: none;
+  border-radius: 16px;
+  background: #ffdd2d;
+  color: #333333;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1;
+  z-index: 20;
+}
+
+.refresh-btn:active {
+  filter: brightness(0.92);
 }
 
 @media (prefers-color-scheme: dark) {

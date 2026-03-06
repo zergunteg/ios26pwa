@@ -1,6 +1,6 @@
 {
-  "name": "iOS26 Topbar Test",
-  "short_name": "Topbar",
+  "name": "iOS26 AppBar Test",
+  "short_name": "AppBar",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#f2f2f7",
