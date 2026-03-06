@@ -7,8 +7,12 @@
   --button-bevel: rgba(255, 255, 255, 0.4);
   --button-icon: #333333;
   --button-glow: rgba(255, 255, 255, 1);
-  --appbar-overlay-top: #ffffff;
-  --appbar-overlay-bottom: rgba(255, 255, 255, 0);
+  --appbar-overlay-0: rgba(255, 255, 255, 1);
+  --appbar-overlay-1: rgba(255, 255, 255, 0.95);
+  --appbar-overlay-2: rgba(255, 255, 255, 0.82);
+  --appbar-overlay-3: rgba(255, 255, 255, 0.56);
+  --appbar-overlay-4: rgba(255, 255, 255, 0.24);
+  --appbar-overlay-5: rgba(255, 255, 255, 0);
   --appbar-height: 70px;
   --close-size: 44px;
   --icon-size: 24px;
@@ -25,8 +29,12 @@
     --button-bg: rgba(31, 31, 31, 0.8);
     --button-icon: #ffffff;
     --button-glow: rgba(31, 31, 31, 0.8);
-    --appbar-overlay-top: #000000;
-    --appbar-overlay-bottom: rgba(0, 0, 0, 0);
+    --appbar-overlay-0: rgba(0, 0, 0, 1);
+    --appbar-overlay-1: rgba(0, 0, 0, 0.95);
+    --appbar-overlay-2: rgba(0, 0, 0, 0.82);
+    --appbar-overlay-3: rgba(0, 0, 0, 0.56);
+    --appbar-overlay-4: rgba(0, 0, 0, 0.24);
+    --appbar-overlay-5: rgba(0, 0, 0, 0);
   }
 }
 
@@ -66,7 +74,15 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(to bottom, var(--appbar-overlay-top) 0%, var(--appbar-overlay-bottom) 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--appbar-overlay-0) 0%,
+    var(--appbar-overlay-1) 14%,
+    var(--appbar-overlay-2) 32%,
+    var(--appbar-overlay-3) 52%,
+    var(--appbar-overlay-4) 70%,
+    var(--appbar-overlay-5) 84%
+  );
   opacity: 0;
   transition: opacity 150ms linear;
 }
