@@ -10,200 +10,7 @@
     <title>iOS26 Topbar Test</title>
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
-    <style>
-      :root {
-        --bg-top: #ffffff;
-        --bg-bottom: #ffffff;
-        --surface: rgba(255, 255, 255, 0.72);
-        --surface-border: rgba(255, 255, 255, 0.85);
-        --text-primary: #1c1c1e;
-        --icon-color: #333333;
-        --appbar-height: 70px;
-        --close-size: 44px;
-        --icon-size: 24px;
-        --title-size: 17px;
-        --left-gap: 16px;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html,
-      body {
-        margin: 0;
-        min-height: 100%;
-        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
-        color: var(--text-primary);
-        background: #ffffff;
-      }
-
-      body {
-        padding-top: 0;
-      }
-
-      .appbar {
-        position: fixed;
-        top: env(safe-area-inset-top);
-        left: 0;
-        right: 0;
-        height: var(--appbar-height);
-        background: transparent;
-        border-bottom: none;
-        box-shadow: none;
-        z-index: 9999;
-        isolation: isolate;
-      }
-
-      .appbar::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 1;
-        background: linear-gradient(to bottom, #ffffff 0%, rgba(255, 255, 255, 0) 100%);
-        opacity: 0;
-        transition: opacity 150ms linear;
-      }
-
-      .appbar-blur-layer {
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        z-index: 0;
-        opacity: 0;
-        transition: opacity 150ms linear;
-      }
-
-      .appbar-blur-layer span {
-        position: absolute;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: calc(-1 * var(--step));
-        height: calc(200px - 10px * var(--step));
-        backdrop-filter: blur(calc(0.06px * var(--step)));
-        -webkit-backdrop-filter: blur(calc(0.06px * var(--step)));
-      }
-
-      .close-btn {
-        position: absolute;
-        left: var(--left-gap);
-        top: 50%;
-        transform: translateY(-50%);
-        width: var(--close-size);
-        height: var(--close-size);
-        border: none;
-        border-radius: 999px;
-        background: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(4px) saturate(4) brightness(1.25);
-        -webkit-backdrop-filter: blur(4px) saturate(2) brightness(1.2);
-        box-shadow: 0 6px 36px rgba(0, 0, 0, 0.12);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-        z-index: 2;
-        overflow: hidden;
-      }
-
-      .close-btn::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        box-shadow: inset 0 0 12px rgba(255, 255, 255, 1);
-        filter: brightness(1.2);
-        pointer-events: none;
-      }
-
-      .close-btn::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        box-shadow: inset 0.3px 0.4px 0 #ffffff, inset -0.5px -0.5px 0 #ffffff;
-        filter: brightness(3);
-        pointer-events: none;
-      }
-
-      .close-btn:active {
-        transform: translateY(-50%) scale(0.96);
-      }
-
-      .title {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, calc(-50% + 12px));
-        margin: 0;
-        font-size: var(--title-size);
-        line-height: 1;
-        font-weight: 700;
-        letter-spacing: -0.02em;
-        white-space: nowrap;
-        z-index: 2;
-        opacity: 0;
-        filter: blur(4px);
-        transition: transform 500ms ease, opacity 500ms ease, filter 500ms ease;
-      }
-
-      body.scrolled .appbar::after,
-      body.scrolled .appbar-blur-layer {
-        opacity: 1;
-      }
-
-      body.scrolled .title {
-        transform: translate(-50%, -50%);
-        opacity: 1;
-        filter: blur(0);
-      }
-
-      .screen {
-        min-height: calc(100vh - env(safe-area-inset-top) - var(--appbar-height));
-        padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px 40px;
-      }
-
-      .card {
-        border-radius: 20px;
-        padding: 16px;
-        background: rgba(255, 255, 255, 0.72);
-        backdrop-filter: blur(18px);
-        -webkit-backdrop-filter: blur(18px);
-        border: 1px solid rgba(255, 255, 255, 0.9);
-        box-shadow: 0 10px 24px rgba(22, 28, 45, 0.08);
-      }
-
-      .card p {
-        margin: 0;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        font-size: 15px;
-        line-height: 1.4;
-      }
-
-      .card-leading {
-        width: 40px;
-        height: 40px;
-        border-radius: 999px;
-        background: #428bf9;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        flex: 0 0 40px;
-      }
-
-      .card-leading svg {
-        width: 24px;
-        height: 24px;
-        display: block;
-      }
-
-      .card + .card {
-        margin-top: 20px;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <header class="appbar">
@@ -214,7 +21,7 @@
               <path d="M4.31703 20.4484C3.85511 19.9972 3.86586 19.2023 4.31703 18.7619L10.9235 12.1447L4.31703 5.53822C3.86586 5.09779 3.85511 4.31361 4.31703 3.84095C4.77894 3.37904 5.56312 3.38978 6.01429 3.84095L12.6207 10.4474L19.2272 3.84095C19.6891 3.38978 20.4518 3.38978 20.9244 3.8517C21.3971 4.30287 21.3864 5.08705 20.9352 5.53822L14.3287 12.1447L20.9352 18.7619C21.3864 19.213 21.3864 19.9865 20.9244 20.4484C20.4625 20.921 19.6891 20.9103 19.2272 20.4591L12.6207 13.8527L6.01429 20.4591C5.56312 20.9103 4.78968 20.9103 4.31703 20.4484Z" fill="black"/>
             </mask>
             <g mask="url(#mask0_90085_719)">
-              <rect width="24" height="24" fill="#333333"/>
+              <rect width="24" height="24" fill="currentColor"/>
             </g>
           </g>
           <defs>
@@ -224,34 +31,13 @@
           </defs>
         </svg>
       </button>
-      <h1 class="title">Демо Навигации</h1>
+      <h1 class="title">Демо</h1>
     </header>
 
-    <main class="screen" id="cards"></main>
-
-    <script>
-      const header = document.querySelector(".appbar");
-      const blurLayer = document.createElement("div");
-      blurLayer.className = "appbar-blur-layer";
-      blurLayer.innerHTML = Array.from({ length: 20 }, (_, i) => `<span style="--step: ${i}"></span>`).join("");
-      header.appendChild(blurLayer);
-
-      const syncScrollState = () => {
-        document.body.classList.toggle("scrolled", window.scrollY > 0);
-      };
-      syncScrollState();
-      window.addEventListener("scroll", syncScrollState, { passive: true });
-
-      const cards = document.querySelector("#cards");
-      const cardIcon =
-        '<span class="card-leading"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.7803 1.79476C12.4702 1.13515 11.5398 1.13515 11.2197 1.79476L8.65867 8.28094L1.76593 8.50082C1.02563 8.58077 0.735518 9.50023 1.28574 9.99993L6.58785 14.2574L4.86716 20.7636C4.7171 21.4832 5.4774 22.0429 6.12766 21.6931L12 17.9553L17.8723 21.6931C18.5126 22.0429 19.2729 21.4832 19.1328 20.7636L17.4122 14.2574L22.7143 9.99993C23.2645 9.50023 22.9744 8.59076 22.2341 8.50082L15.3413 8.28094L12.7803 1.79476Z" fill="white"/></svg></span>';
-      cards.innerHTML = Array.from({ length: 20 }, () => `<section class="card"><p>${cardIcon}<span>Card title</span></p></section>`).join("");
-
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("./sw.js").catch(() => {});
-        });
-      }
-    </script>
+    <main class="screen">
+      <h2 class="content-title">Демо</h2>
+      <div class="cards" id="cards"></div>
+    </main>
+    <script src="app.js"></script>
   </body>
 </html>
