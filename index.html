@@ -2,7 +2,7 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
     <meta name="theme-color" content="#f2f2f7" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -39,16 +39,19 @@
       }
 
       body {
-        padding-top: env(safe-area-inset-top);
+        padding-top: 0;
       }
 
       .appbar {
-        position: sticky;
-        top: 0;
+        position: fixed;
+        top: env(safe-area-inset-top);
+        left: 0;
+        right: 0;
         height: var(--appbar-height);
         background: transparent;
         border-bottom: none;
         box-shadow: none;
+        z-index: 9999;
       }
 
       .close-btn {
@@ -87,7 +90,7 @@
 
       .screen {
         min-height: calc(100vh - env(safe-area-inset-top) - var(--appbar-height));
-        padding: 20px 16px 40px;
+        padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px 40px;
       }
 
       .card {
@@ -104,6 +107,10 @@
         margin: 0;
         font-size: 15px;
         line-height: 1.4;
+      }
+
+      .card + .card {
+        margin-top: 12px;
       }
     </style>
   </head>
@@ -130,9 +137,26 @@
     </header>
 
     <main class="screen">
-      <section class="card">
-        <p>Тестовая страница для настройки верхнего бара под iOS26. Меняйте стили прямо в CSS и пушьте в GitHub Pages для проверки на телефоне через PWA.</p>
-      </section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
+      <section class="card"><p>Card title</p></section>
     </main>
 
     <script>
