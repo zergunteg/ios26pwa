@@ -4,11 +4,24 @@ blurLayer.className = "appbar-blur-layer";
 blurLayer.innerHTML = Array.from({ length: 20 }, (_, i) => `<span style="--step: ${i}"></span>`).join("");
 header.appendChild(blurLayer);
 
-const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+let themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const darkSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 const syncThemeColor = () => {
   if (!themeColorMeta) return;
-  themeColorMeta.setAttribute("content", darkSchemeQuery.matches ? "#000000" : "#ffffff");
+  const nextColor = darkSchemeQuery.matches ? "#000000" : "#ffffff";
+
+  // Keep UA color-scheme and toolbar color aligned.
+  document.documentElement.style.colorScheme = darkSchemeQuery.matches ? "dark" : "light";
+
+  // iOS Safari may ignore in-place content updates, so replace the tag.
+  if (themeColorMeta.getAttribute("content") !== nextColor) {
+    const replacementMeta = themeColorMeta.cloneNode();
+    replacementMeta.setAttribute("content", nextColor);
+    themeColorMeta.replaceWith(replacementMeta);
+    themeColorMeta = replacementMeta;
+  } else {
+    themeColorMeta.setAttribute("content", nextColor);
+  }
 };
 syncThemeColor();
 if (typeof darkSchemeQuery.addEventListener === "function") {
@@ -16,6 +29,11 @@ if (typeof darkSchemeQuery.addEventListener === "function") {
 } else if (typeof darkSchemeQuery.addListener === "function") {
   darkSchemeQuery.addListener(syncThemeColor);
 }
+window.addEventListener("pageshow", syncThemeColor);
+window.addEventListener("focus", syncThemeColor);
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) syncThemeColor();
+});
 
 const syncScrollState = () => {
   document.body.classList.toggle("scrolled", window.scrollY > 0);
