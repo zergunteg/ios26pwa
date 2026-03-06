@@ -112,7 +112,7 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-50%, calc(-50% + 8px));
+        transform: translate(-50%, calc(-50% + 16px));
         margin: 0;
         font-size: var(--title-size);
         line-height: 1;
@@ -121,8 +121,8 @@
         white-space: nowrap;
         z-index: 2;
         opacity: 0;
-        filter: blur(8px);
-        transition: transform 300ms ease, opacity 300ms ease, filter 300ms ease;
+        filter: blur(4px);
+        transition: transform 500ms ease, opacity 500ms ease, filter 500ms ease;
       }
 
       body.scrolled .appbar::after,
