@@ -63,6 +63,8 @@ const syncThemeColor = () => {
   }
 };
 syncThemeColor();
+window.requestAnimationFrame(syncThemeColor);
+window.addEventListener("load", syncThemeColor);
 const handleThemeSchemeChange = () => {
   triggerThemeAnimation();
   syncThemeColor();
