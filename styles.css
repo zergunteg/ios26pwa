@@ -5,6 +5,20 @@
   --text-primary: #333333;
   --button-bg: rgba(255, 255, 255, 0.7);
   --button-bevel: rgba(255, 255, 255, 0.4);
+  --button-bevel-gradient: linear-gradient(
+    230deg,
+    rgba(255, 255, 255, 0) 5%,
+    rgba(255, 255, 255, 0.13) 20%,
+    rgba(255, 255, 255, 0.85) 40%,
+    rgba(255, 255, 255, 0.95) 45%,
+    rgba(255, 255, 255, 1) 48%,
+    rgba(255, 255, 255, 1) 50%,
+    rgba(255, 255, 255, 1) 52%,
+    rgba(255, 255, 255, 0.95) 55%,
+    rgba(255, 255, 255, 0.85) 60%,
+    rgba(255, 255, 255, 0.13) 80%,
+    rgba(255, 255, 255, 0) 95%
+  );
   --button-icon: #333333;
   --button-glow: rgba(255, 255, 255, 1);
   --appbar-overlay-0: rgba(255, 255, 255, 1);
@@ -155,26 +169,13 @@ body {
   position: absolute;
   inset: 0;
   box-sizing: border-box;
-  padding: 0.5px;
+  padding: 1px;
   border-radius: inherit;
-  background: linear-gradient(
-    230deg,
-    rgba(255, 255, 255, 0) 6.92%,
-    rgba(255, 255, 255, 0.13) 20.1%,
-    rgba(255, 255, 255, 0.85) 42.09%,
-    rgba(255, 255, 255, 0.95) 46.48%,
-    rgba(255, 255, 255, 1) 49.12%,
-    rgba(255, 255, 255, 1) 51.3%,
-    rgba(255, 255, 255, 1) 52.64%,
-    rgba(255, 255, 255, 0.95) 55.27%,
-    rgba(255, 255, 255, 0.85) 59.67%,
-    rgba(255, 255, 255, 0.13) 81.65%,
-    rgba(255, 255, 255, 0) 94.84%
-  );
+  background: var(--button-bevel-gradient);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  filter: brightness(1.5);
+  filter: brightness(1.1);
   pointer-events: none;
 }
 
@@ -309,21 +310,7 @@ body.scrolled .content-title {
   }
 
   .appbar-btn::after {
-    background: linear-gradient(
-      230deg,
-      rgba(255, 255, 255, 0) 6.92%,
-      rgba(255, 255, 255, 0.05) 20.1%,
-      rgba(255, 255, 255, 0.33) 42.09%,
-      rgba(255, 255, 255, 0.37) 46.48%,
-      rgba(255, 255, 255, 0.39) 49.12%,
-      rgba(255, 255, 255, 0.39) 51.3%,
-      rgba(255, 255, 255, 0.39) 52.64%,
-      rgba(255, 255, 255, 0.37) 55.27%,
-      rgba(255, 255, 255, 0.33) 59.67%,
-      rgba(255, 255, 255, 0.05) 81.65%,
-      rgba(255, 255, 255, 0) 94.84%
-    );
-    filter: none;
+    filter: brightness(0.6);
   }
 
   .card {
