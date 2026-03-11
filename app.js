@@ -14,7 +14,7 @@ document.addEventListener("touchstart", () => {}, { passive: true });
 let themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const darkSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 const heroHeader = page === "color-header" ? document.querySelector(".hero-header") : null;
-const appbarToneReleaseOffset = 70;
+const appbarToneReleaseOffset = 80;
 let themeAnimationTimer = null;
 
 const getHeroHeaderColor = () => {
