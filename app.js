@@ -4,6 +4,9 @@ blurLayer.className = "appbar-blur-layer";
 blurLayer.innerHTML = Array.from({ length: 20 }, (_, i) => `<span style="--step: ${i}"></span>`).join("");
 header.appendChild(blurLayer);
 
+// iOS Safari reliably applies :active only after a touchstart handler exists.
+document.addEventListener("touchstart", () => {}, { passive: true });
+
 let themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const darkSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 const syncThemeColor = () => {

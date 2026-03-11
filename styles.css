@@ -149,6 +149,7 @@ body {
   appearance: none;
   -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
   transition: transform 300ms var(--expressive-entrance);
 }
 
