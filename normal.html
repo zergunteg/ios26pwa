@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="iOS26 AppBar" />
+    <title>Обычный экран</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="normal">
+    <header class="appbar">
+      <button class="appbar-btn close-btn" data-back-to-home aria-label="Назад">
+        <svg width="20.4" height="20.4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M15.7061 4.41113C16.0977 4.80273 16.0977 5.43652 15.7061 5.82812L9.5332 12.001L15.7061 18.1738C16.0977 18.5654 16.0977 19.1992 15.7061 19.5908C15.3145 19.9824 14.6807 19.9824 14.2891 19.5908L7.40918 12.7109C7.01758 12.3193 7.01758 11.6855 7.40918 11.2939L14.2891 4.41406C14.6807 4.02246 15.3145 4.02246 15.7061 4.41113Z" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="appbar-btn reload-btn" id="reload-btn" aria-label="Обновить">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g clip-path="url(#clip0_3_21)">
+            <path d="M3 12.3828C3 17.1777 6.84766 21.0254 11.6328 21.0254C16.418 21.0254 20.2559 17.1777 20.2559 12.3828C20.2559 11.9141 19.9238 11.5723 19.4453 11.5723C18.9863 11.5723 18.6836 11.9141 18.6836 12.3828C18.6836 16.3086 15.5488 19.4531 11.6328 19.4531C7.7168 19.4531 4.57227 16.3086 4.57227 12.3828C4.57227 8.4668 7.7168 5.33203 11.6328 5.33203C12.375 5.33203 13.0684 5.39062 13.6445 5.52734L10.7246 8.41797C10.5781 8.57422 10.5 8.76953 10.5 8.97461C10.5 9.42383 10.832 9.75586 11.2715 9.75586C11.5156 9.75586 11.7012 9.67773 11.8379 9.53125L15.8613 5.48828C16.0371 5.32227 16.1055 5.12695 16.1055 4.90234C16.1055 4.6875 16.0176 4.47266 15.8613 4.31641L11.8379 0.234375C11.7012 0.078125 11.5059 0 11.2715 0C10.832 0 10.5 0.351562 10.5 0.800781C10.5 1.00586 10.5781 1.20117 10.7148 1.35742L13.3125 3.92578C12.8047 3.82812 12.2285 3.75977 11.6328 3.75977C6.84766 3.75977 3 7.59766 3 12.3828Z" fill="currentColor" fill-opacity="0.85"/>
+          </g>
+          <defs>
+            <clipPath id="clip0_3_21">
+              <rect width="17.2559" height="23.3691" fill="white" transform="translate(3)"/>
+            </clipPath>
+          </defs>
+        </svg>
+      </button>
+      <h1 class="title">Обычный экран</h1>
+    </header>
+
+    <main class="screen">
+      <h2 class="content-title">Обычный экран</h2>
+      <div class="cards" id="cards"></div>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

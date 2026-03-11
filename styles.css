@@ -27,6 +27,7 @@
   --appbar-overlay-3: rgba(255, 255, 255, 0.56);
   --appbar-overlay-4: rgba(255, 255, 255, 0.24);
   --appbar-overlay-5: rgba(255, 255, 255, 0);
+  --hero-header-bg: #333333;
   --appbar-height: 70px;
   --close-size: 44px;
   --icon-size: 24px;
@@ -266,6 +267,13 @@ body.scrolled .content-title {
   margin-top: 24px;
 }
 
+.cards--padded {
+  padding: 0 16px 0;
+  margin-top: -64px;
+  position: relative;
+  z-index: 1;
+}
+
 .card {
   border-radius: 24px;
   padding: 16px;
@@ -307,6 +315,71 @@ body.scrolled .content-title {
   margin-top: 20px;
 }
 
+.nav-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.nav-link + .nav-link {
+  margin-top: 20px;
+}
+
+.nav-link:active {
+  opacity: 0.92;
+}
+
+.screen--hero {
+  padding: 0 0 40px;
+}
+
+.hero-header {
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+  background: var(--hero-header-bg);
+  padding: calc(env(safe-area-inset-top) + var(--appbar-height) + 24px) 16px 0 32px;
+}
+
+.hero-title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #ffffff;
+  opacity: 1;
+  transition: opacity 150ms linear;
+}
+
+.hero-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 64px;
+  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.99) 6.67%,
+    rgba(255, 255, 255, 0.96) 13.33%,
+    rgba(255, 255, 255, 0.92) 20%,
+    rgba(255, 255, 255, 0.85) 26.67%,
+    rgba(255, 255, 255, 0.77) 33.33%,
+    rgba(255, 255, 255, 0.67) 40%,
+    rgba(255, 255, 255, 0.56) 46.67%,
+    rgba(255, 255, 255, 0.44) 53.33%,
+    rgba(255, 255, 255, 0.33) 60%,
+    rgba(255, 255, 255, 0.23) 66.67%,
+    rgba(255, 255, 255, 0.15) 73.33%,
+    rgba(255, 255, 255, 0.08) 80%,
+    rgba(255, 255, 255, 0.04) 86.67%,
+    rgba(255, 255, 255, 0.01) 93.33%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
 @media (prefers-color-scheme: dark) {
   .appbar-btn {
     backdrop-filter: blur(4px) saturate(4);
@@ -324,4 +397,86 @@ body.scrolled .content-title {
   .card {
     border: none;
   }
+
+  .hero-header::after {
+    background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.99) 6.67%,
+      rgba(0, 0, 0, 0.96) 13.33%,
+      rgba(0, 0, 0, 0.92) 20%,
+      rgba(0, 0, 0, 0.85) 26.67%,
+      rgba(0, 0, 0, 0.77) 33.33%,
+      rgba(0, 0, 0, 0.67) 40%,
+      rgba(0, 0, 0, 0.56) 46.67%,
+      rgba(0, 0, 0, 0.44) 53.33%,
+      rgba(0, 0, 0, 0.33) 60%,
+      rgba(0, 0, 0, 0.23) 66.67%,
+      rgba(0, 0, 0, 0.15) 73.33%,
+      rgba(0, 0, 0, 0.08) 80%,
+      rgba(0, 0, 0, 0.04) 86.67%,
+      rgba(0, 0, 0, 0.01) 93.33%,
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+}
+
+body.scrolled .hero-title {
+  opacity: 0;
+}
+
+body.appbar-dark-forced .appbar::after {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--hero-header-bg) 100%, transparent) 0%,
+    color-mix(in srgb, var(--hero-header-bg) 95%, transparent) 14%,
+    color-mix(in srgb, var(--hero-header-bg) 82%, transparent) 32%,
+    color-mix(in srgb, var(--hero-header-bg) 56%, transparent) 52%,
+    color-mix(in srgb, var(--hero-header-bg) 24%, transparent) 70%,
+    color-mix(in srgb, var(--hero-header-bg) 0%, transparent) 84%
+  );
+}
+
+body.appbar-dark-forced .appbar-btn {
+  background: rgba(88, 88, 88, 0.31);
+  color: #ffffff;
+  backdrop-filter: blur(4px) saturate(4);
+  -webkit-backdrop-filter: blur(4px) saturate(2);
+}
+
+body.appbar-dark-forced .appbar-btn::before {
+  box-shadow: inset 0 0 12px rgba(31, 31, 31, 0.8);
+  filter: none;
+}
+
+body.appbar-dark-forced .appbar-btn::after {
+  filter: brightness(0.6);
+}
+
+body.appbar-dark-forced .title {
+  color: #ffffff;
+}
+
+body.theme-animating {
+  transition: background-color 320ms ease, color 320ms ease;
+}
+
+body.theme-animating .appbar::after,
+body.theme-animating .appbar-btn,
+body.theme-animating .appbar-btn::before,
+body.theme-animating .appbar-btn::after,
+body.theme-animating .title,
+body.theme-animating .content-title,
+body.theme-animating .card,
+body.theme-animating .hero-header,
+body.theme-animating .hero-title {
+  transition:
+    background-color 320ms ease,
+    color 320ms ease,
+    border-color 320ms ease,
+    box-shadow 320ms ease,
+    opacity 320ms ease,
+    filter 320ms ease,
+    backdrop-filter 320ms ease,
+    -webkit-backdrop-filter 320ms ease;
 }
