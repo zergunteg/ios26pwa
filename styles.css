@@ -77,10 +77,10 @@ body {
 
 .appbar {
   position: fixed;
-  top: env(safe-area-inset-top);
+  top: 0;
   left: 0;
   right: 0;
-  height: var(--appbar-height);
+  height: calc(env(safe-area-inset-top) + var(--appbar-height));
   background: transparent;
   border-bottom: none;
   box-shadow: none;
@@ -158,7 +158,7 @@ body {
 
 .appbar-btn {
   position: absolute;
-  top: 50%;
+  top: calc(env(safe-area-inset-top) + (var(--appbar-height) / 2));
   transform: translateY(-50%);
   width: var(--close-size);
   height: var(--close-size);
@@ -202,8 +202,8 @@ body {
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  box-shadow: inset 0 0 12px var(--button-glow);
-  filter: brightness(1.05);
+  box-shadow: inset 0 0 12px rgba(31, 31, 31, 0.8);
+  filter: brightness(2);
   pointer-events: none;
   transition: box-shadow 220ms ease, filter 220ms ease;
 }
@@ -255,7 +255,7 @@ body {
 .title {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: calc(env(safe-area-inset-top) + (var(--appbar-height) / 2));
   transform: translate(-50%, calc(-50% + 12px));
   margin: 0;
   font-size: var(--title-size);
@@ -377,7 +377,7 @@ body.scrolled .content-title {
 }
 
 .hero-header {
-  height: 240px;
+  height: calc(env(safe-area-inset-top) + var(--appbar-height) + 170px);
   position: relative;
   overflow: hidden;
   background: var(--hero-header-bg);
