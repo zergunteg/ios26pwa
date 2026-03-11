@@ -14,7 +14,13 @@ document.addEventListener("touchstart", () => {}, { passive: true });
 let themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const darkSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 const heroHeader = page === "color-header" ? document.querySelector(".hero-header") : null;
+const appbarToneReleaseOffset = 70;
 let themeAnimationTimer = null;
+
+const getHeroHeaderColor = () => {
+  const color = getComputedStyle(document.documentElement).getPropertyValue("--hero-header-bg").trim();
+  return color || "#333333";
+};
 
 const triggerThemeAnimation = () => {
   document.body.classList.remove("theme-animating");
@@ -27,18 +33,21 @@ const triggerThemeAnimation = () => {
   themeAnimationTimer = window.setTimeout(() => {
     document.body.classList.remove("theme-animating");
     themeAnimationTimer = null;
-  }, 360);
+  }, 150);
 };
 
 const syncAppbarTone = () => {
+  const heroCutoff = heroHeader ? Math.max(0, heroHeader.offsetHeight - appbarToneReleaseOffset) : 0;
   const shouldForceDark =
-    page === "color-header" && !darkSchemeQuery.matches && heroHeader && window.scrollY < heroHeader.offsetHeight;
+    page === "color-header" && !darkSchemeQuery.matches && heroHeader && window.scrollY < heroCutoff;
   document.body.classList.toggle("appbar-dark-forced", Boolean(shouldForceDark));
+  return Boolean(shouldForceDark);
 };
 
 const syncThemeColor = () => {
   if (!themeColorMeta) return;
-  const nextColor = darkSchemeQuery.matches ? "#000000" : "#ffffff";
+  const forceDarkOnHero = syncAppbarTone();
+  const nextColor = darkSchemeQuery.matches ? "#000000" : forceDarkOnHero ? getHeroHeaderColor() : "#ffffff";
 
   // Keep UA color-scheme and toolbar color aligned.
   document.documentElement.style.colorScheme = darkSchemeQuery.matches ? "dark" : "light";
@@ -52,7 +61,6 @@ const syncThemeColor = () => {
   } else {
     themeColorMeta.setAttribute("content", nextColor);
   }
-  syncAppbarTone();
 };
 syncThemeColor();
 const handleThemeSchemeChange = () => {
@@ -72,16 +80,16 @@ document.addEventListener("visibilitychange", () => {
 
 const syncScrollState = () => {
   document.body.classList.toggle("scrolled", window.scrollY > 0);
-  syncAppbarTone();
+  syncThemeColor();
 };
 syncScrollState();
 window.addEventListener("scroll", syncScrollState, { passive: true });
 
 const cards = document.querySelector("#cards");
-const cardIcon =
-  '<span class="card-leading"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12.7803 1.79476C12.4702 1.13515 11.5398 1.13515 11.2197 1.79476L8.65867 8.28094L1.76593 8.50082C1.02563 8.58077 0.735518 9.50023 1.28574 9.99993L6.58785 14.2574L4.86716 20.7636C4.7171 21.4832 5.4774 22.0429 6.12766 21.6931L12 17.9553L17.8723 21.6931C18.5126 22.0429 19.2729 21.4832 19.1328 20.7636L17.4122 14.2574L22.7143 9.99993C23.2645 9.50023 22.9744 8.59076 22.2341 8.50082L15.3413 8.28094L12.7803 1.79476Z" fill="white"/></svg></span>';
+const cardTemplate = document.querySelector("#card-template");
 if (cards && (page === "normal" || page === "color-header")) {
-  cards.innerHTML = Array.from({ length: 20 }, () => `<section class="card"><p>${cardIcon}<span>Card title</span></p></section>`).join("");
+  const cardMarkup = cardTemplate ? cardTemplate.innerHTML.trim() : "";
+  cards.innerHTML = Array.from({ length: 20 }, () => cardMarkup).join("");
 }
 
 const backButton = document.querySelector("[data-back-to-home]");
