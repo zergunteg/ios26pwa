@@ -76,7 +76,7 @@ body {
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   color: var(--text-primary);
-  background: transparent !important;
+  background: transparent;
 }
 
 html {
@@ -91,12 +91,13 @@ html.page-color-header {
 }
 
 body {
-  background: transparent;
+  background: var(--bg-page);
   padding-top: 0;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   min-height: var(--app-vh);
+  transition: background-color 75ms linear;
 }
 
 .app-shell {
@@ -324,7 +325,7 @@ body.scrolled .title {
 .screen {
   min-height: 100%;
   padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px calc(40px + env(safe-area-inset-bottom));
-  background: transparent;
+  background: var(--bg-page);
 }
 
 .content-title {
@@ -414,6 +415,7 @@ body.scrolled .content-title {
 }
 
 .screen--hero {
+  background: var(--bg-page);
   padding: 0 0 calc(40px + env(safe-area-inset-bottom));
 }
 
@@ -539,6 +541,10 @@ body.appbar-dark-forced .title {
 }
 
 body.shell-hero-bg .app-shell::before {
+  background: var(--hero-header-bg);
+}
+
+body.shell-hero-bg {
   background: var(--hero-header-bg);
 }
 
