@@ -1,5 +1,6 @@
 :root {
   --app-vh: 100vh;
+  --statusbar-liquid-offset: 1px;
   --bg-page: #ffffff;
   --card-bg: #ffffff;
   --card-border: rgba(255, 255, 255, 0.9);
@@ -76,7 +77,6 @@ body {
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   color: var(--text-primary);
-  background: var(--bg-page);
 }
 
 html {
@@ -84,6 +84,7 @@ html {
 }
 
 body {
+  background: transparent;
   padding-top: 0;
   overflow: hidden;
   min-height: var(--app-vh);
@@ -118,7 +119,7 @@ body.standalone-mode .app-scroll::after {
 
 .appbar {
   position: fixed;
-  top: 0;
+  top: var(--statusbar-liquid-offset);
   left: 0;
   right: 0;
   height: calc(env(safe-area-inset-top) + var(--appbar-height));
