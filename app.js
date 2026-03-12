@@ -1,5 +1,8 @@
 const page = document.body.dataset.page || "home";
 const header = document.querySelector(".appbar");
+const statusbarFill = document.createElement("div");
+statusbarFill.className = "statusbar-fill";
+document.body.prepend(statusbarFill);
 
 if (header) {
   const blurLayer = document.createElement("div");

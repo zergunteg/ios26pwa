@@ -28,6 +28,7 @@
   --appbar-overlay-4: rgba(255, 255, 255, 0.24);
   --appbar-overlay-5: rgba(255, 255, 255, 0);
   --hero-header-bg: #333333;
+  --statusbar-fill-bg: rgba(255, 255, 255, 0.72);
   --appbar-height: 70px;
   --close-size: 44px;
   --icon-size: 24px;
@@ -52,6 +53,7 @@
     --appbar-overlay-3: rgba(0, 0, 0, 0.56);
     --appbar-overlay-4: rgba(0, 0, 0, 0.24);
     --appbar-overlay-5: rgba(0, 0, 0, 0);
+    --statusbar-fill-bg: rgba(0, 0, 0, 0.72);
   }
 }
 
@@ -73,6 +75,18 @@ body {
 
 body {
   padding-top: 0;
+}
+
+.statusbar-fill {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: env(safe-area-inset-top);
+  background: var(--statusbar-fill-bg);
+  pointer-events: none;
+  z-index: 10001;
+  transition: background-color 220ms ease;
 }
 
 .appbar {
@@ -497,11 +511,16 @@ body.appbar-dark-forced .title {
   color: #ffffff;
 }
 
+body.appbar-dark-forced .statusbar-fill {
+  background: color-mix(in srgb, var(--hero-header-bg) 72%, transparent);
+}
+
 body.theme-animating {
   transition: background-color 150ms ease, color 150ms ease;
 }
 
 body.theme-animating .appbar::after,
+body.theme-animating .statusbar-fill,
 body.theme-animating .appbar-btn,
 body.theme-animating .appbar-btn::before,
 body.theme-animating .appbar-btn::after,
