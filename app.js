@@ -1,6 +1,20 @@
 const page = document.body.dataset.page || "home";
 const header = document.querySelector(".appbar");
 const scrollContainer = document.querySelector("#app-scroll");
+const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+
+const syncAppViewportHeight = () => {
+  if (isStandalone) {
+    document.documentElement.style.setProperty("--app-vh", `${window.innerHeight}px`);
+  } else {
+    document.documentElement.style.removeProperty("--app-vh");
+  }
+};
+
+syncAppViewportHeight();
+window.addEventListener("resize", syncAppViewportHeight);
+window.addEventListener("orientationchange", syncAppViewportHeight);
+window.addEventListener("pageshow", syncAppViewportHeight);
 
 if (header) {
   const blurLayer = document.createElement("div");
