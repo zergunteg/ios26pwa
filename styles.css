@@ -89,8 +89,10 @@ body {
 .app-scroll {
   position: absolute;
   inset: 0;
+  box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-bottom: env(safe-area-inset-bottom);
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
 }
@@ -302,8 +304,8 @@ body.scrolled .title {
 }
 
 .screen {
-  min-height: calc(100dvh - env(safe-area-inset-top) - var(--appbar-height));
-  padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px calc(40px + env(safe-area-inset-bottom));
+  min-height: 100%;
+  padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px 40px;
   background: var(--bg-page);
 }
 
@@ -394,7 +396,7 @@ body.scrolled .content-title {
 }
 
 .screen--hero {
-  padding: 0 0 calc(40px + env(safe-area-inset-bottom));
+  padding: 0 0 40px;
 }
 
 .hero-header {
