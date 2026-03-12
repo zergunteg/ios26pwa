@@ -1,5 +1,6 @@
 const page = document.body.dataset.page || "home";
 const header = document.querySelector(".appbar");
+const scrollContainer = document.querySelector("#app-scroll");
 
 if (header) {
   const blurLayer = document.createElement("div");
@@ -37,9 +38,10 @@ const triggerThemeAnimation = () => {
 };
 
 const syncAppbarTone = () => {
+  const scrollTop = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
   const heroCutoff = heroHeader ? Math.max(0, heroHeader.offsetHeight - appbarToneReleaseOffset) : 0;
   const shouldForceDark =
-    page === "color-header" && !darkSchemeQuery.matches && heroHeader && window.scrollY < heroCutoff;
+    page === "color-header" && !darkSchemeQuery.matches && heroHeader && scrollTop < heroCutoff;
   document.body.classList.toggle("appbar-dark-forced", Boolean(shouldForceDark));
   return Boolean(shouldForceDark);
 };
@@ -81,11 +83,16 @@ document.addEventListener("visibilitychange", () => {
 });
 
 const syncScrollState = () => {
-  document.body.classList.toggle("scrolled", window.scrollY > 0);
+  const scrollTop = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
+  document.body.classList.toggle("scrolled", scrollTop > 0);
   syncThemeColor();
 };
 syncScrollState();
-window.addEventListener("scroll", syncScrollState, { passive: true });
+if (scrollContainer) {
+  scrollContainer.addEventListener("scroll", syncScrollState, { passive: true });
+} else {
+  window.addEventListener("scroll", syncScrollState, { passive: true });
+}
 
 const cards = document.querySelector("#cards");
 const cardTemplate = document.querySelector("#card-template");
