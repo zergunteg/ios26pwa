@@ -1,6 +1,6 @@
 :root {
   --app-vh: 100vh;
-  --statusbar-liquid-offset: 1px;
+  --statusbar-liquid-offset: 0px;
   --bg-page: #ffffff;
   --card-bg: #ffffff;
   --card-border: rgba(255, 255, 255, 0.9);
@@ -77,10 +77,11 @@ body {
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
   color: var(--text-primary);
+  background: transparent !important;
 }
 
 html {
-  background: var(--bg-page);
+  background: transparent !important;
 }
 
 body {
@@ -104,6 +105,7 @@ body {
   position: absolute;
   inset: 0;
   box-sizing: border-box;
+  min-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
   padding-bottom: env(safe-area-inset-bottom);
