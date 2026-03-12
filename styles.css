@@ -110,6 +110,12 @@ body {
   overscroll-behavior-y: contain;
 }
 
+body.standalone-mode .app-scroll::after {
+  content: "";
+  display: block;
+  height: max(env(safe-area-inset-bottom), 24px);
+}
+
 .appbar {
   position: fixed;
   top: 0;

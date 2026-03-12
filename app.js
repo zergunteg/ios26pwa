@@ -2,6 +2,7 @@ const page = document.body.dataset.page || "home";
 const header = document.querySelector(".appbar");
 const scrollContainer = document.querySelector("#app-scroll");
 const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+document.body.classList.toggle("standalone-mode", isStandalone);
 
 const syncAppViewportHeight = () => {
   if (isStandalone) {
