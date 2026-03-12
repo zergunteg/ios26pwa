@@ -62,7 +62,7 @@ const getScrollTop = () => Math.max(0, window.scrollY || 0);
 
 const syncAppbarTone = () => {
   const scrollTop = getScrollTop();
-  const probeY = scrollTop + 1;
+  const probeY = Math.max(1, scrollTop + 1);
   let activeZone = null;
 
   for (const zone of appbarZones) {
@@ -72,6 +72,12 @@ const syncAppbarTone = () => {
       activeZone = zone;
       break;
     }
+  }
+
+  // iOS momentum/rubber-band can briefly emit unstable values near top.
+  // Keep color-header pinned to hero zone at the very top to avoid light flash.
+  if (!activeZone && page === "color-header" && heroHeader && scrollTop <= 4) {
+    activeZone = heroHeader;
   }
 
   const isHeroZone = Boolean(activeZone);
