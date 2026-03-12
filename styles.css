@@ -262,7 +262,6 @@ body {
   mask-composite: exclude;
   filter: brightness(1.1);
   pointer-events: none;
-  transition: filter 75ms ease;
 }
 
 .appbar-btn:focus,
@@ -272,6 +271,7 @@ body {
 
 .appbar-btn:active {
   transform: translateY(-50%) scale(1.1);
+  filter: brightness(3);
 }
 
 @keyframes close-btn-bounce {
@@ -419,6 +419,36 @@ body.scrolled .content-title {
   padding: 0 0 calc(40px + env(safe-area-inset-bottom));
 }
 
+.screen--color-content {
+  background: var(--bg-page);
+  padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 0 calc(180px + env(safe-area-inset-bottom));
+}
+
+.screen--color-content .content-title {
+  padding: 0 16px;
+}
+
+.screen--color-content .color-content-rect:first-of-type {
+  margin-top: 24px;
+}
+
+.color-content-rect {
+  margin-top: 0;
+  height: 220px;
+  background-color: var(--zone-bg, #2f3f5b) !important;
+  padding: 16px;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.color-content-rect-title {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 700;
+  color: #ffffff !important;
+}
+
 .hero-header {
   height: calc(env(safe-area-inset-top) + var(--appbar-height) + 170px);
   position: relative;
@@ -474,7 +504,7 @@ body.scrolled .content-title {
 
   .appbar-btn::before {
     box-shadow: inset 0 0 12px rgba(31, 31, 31, 0.8);
-    filter: brightness(2);
+    filter: brightness(1.1);
   }
 
   .appbar-btn::after {
@@ -506,6 +536,7 @@ body.scrolled .content-title {
       rgba(0, 0, 0, 0) 100%
     );
   }
+
 }
 
 body.scrolled .hero-title {
@@ -528,8 +559,8 @@ body.appbar-dark-forced .appbar-btn {
 }
 
 body.appbar-dark-forced .appbar-btn::before {
-  box-shadow: inset 0 0 12px rgba(31, 31, 31, 0.8);
-  filter: brightness(2);
+  box-shadow: inset 0 0 12px var(--hero-header-bg);
+  filter: brightness(1.1);
 }
 
 body.appbar-dark-forced .appbar-btn::after {
@@ -555,7 +586,6 @@ body.theme-animating {
 body.theme-animating .appbar::after,
 body.theme-animating .appbar-btn,
 body.theme-animating .appbar-btn::before,
-body.theme-animating .appbar-btn::after,
 body.theme-animating .title,
 body.theme-animating .content-title,
 body.theme-animating .card,

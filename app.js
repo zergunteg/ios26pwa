@@ -2,6 +2,7 @@ const page = document.body.dataset.page || "home";
 const header = document.querySelector(".appbar");
 const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
 document.documentElement.classList.toggle("page-color-header", page === "color-header");
+document.documentElement.classList.toggle("page-color-content", page === "color-content");
 
 const syncAppViewportHeight = () => {
   if (isStandalone) {
@@ -29,7 +30,13 @@ document.addEventListener("touchstart", () => {}, { passive: true });
 let themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const darkSchemeQuery = window.matchMedia("(prefers-color-scheme: dark)");
 const heroHeader = page === "color-header" ? document.querySelector(".hero-header") : null;
-const appbarToneReleaseOffset = 80;
+const appbarZones =
+  page === "color-content"
+    ? Array.from(document.querySelectorAll("[data-appbar-zone]"))
+    : heroHeader
+      ? [heroHeader]
+      : [];
+const appbarToneReleaseOffset = page === "color-content" ? 0 : 80;
 let themeAnimationTimer = null;
 
 const getHeroHeaderColor = () => {
@@ -53,10 +60,31 @@ const triggerThemeAnimation = () => {
 
 const syncAppbarTone = () => {
   const scrollTop = window.scrollY;
-  const heroCutoff = heroHeader ? Math.max(0, heroHeader.offsetHeight - appbarToneReleaseOffset) : 0;
-  const isHeroZone = page === "color-header" && heroHeader && scrollTop < heroCutoff;
+  const probeY = scrollTop + 1;
+  let activeZone = null;
+
+  for (const zone of appbarZones) {
+    const start = zone.offsetTop;
+    const end = start + Math.max(0, zone.offsetHeight - appbarToneReleaseOffset);
+    if (probeY >= start && probeY < end) {
+      activeZone = zone;
+      break;
+    }
+  }
+
+  const isHeroZone = Boolean(activeZone);
   const shouldForceDark = isHeroZone && !darkSchemeQuery.matches;
-  document.body.classList.toggle("shell-hero-bg", Boolean(isHeroZone));
+  const activeZoneColor = activeZone
+    ? activeZone.dataset.appbarColor || getComputedStyle(activeZone).backgroundColor
+    : "";
+
+  if (activeZoneColor) {
+    document.documentElement.style.setProperty("--hero-header-bg", activeZoneColor);
+  } else {
+    document.documentElement.style.removeProperty("--hero-header-bg");
+  }
+
+  document.body.classList.toggle("shell-hero-bg", isHeroZone);
   document.body.classList.toggle("appbar-dark-forced", Boolean(shouldForceDark));
   return Boolean(shouldForceDark);
 };
@@ -107,7 +135,7 @@ window.addEventListener("scroll", syncScrollState, { passive: true });
 
 const cards = document.querySelector("#cards");
 const cardTemplate = document.querySelector("#card-template");
-if (cards && (page === "normal" || page === "color-header")) {
+if (cards && (page === "normal" || page === "color-header" || page === "color-content")) {
   const cardMarkup = cardTemplate ? cardTemplate.innerHTML.trim() : "";
   cards.innerHTML = Array.from({ length: 20 }, () => cardMarkup).join("");
 }
