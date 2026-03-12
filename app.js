@@ -58,8 +58,10 @@ const triggerThemeAnimation = () => {
   }, 150);
 };
 
+const getScrollTop = () => Math.max(0, window.scrollY || 0);
+
 const syncAppbarTone = () => {
-  const scrollTop = window.scrollY;
+  const scrollTop = getScrollTop();
   const probeY = scrollTop + 1;
   let activeZone = null;
 
@@ -126,7 +128,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 const syncScrollState = () => {
-  const scrollTop = window.scrollY;
+  const scrollTop = getScrollTop();
   document.body.classList.toggle("scrolled", scrollTop > 0);
   syncThemeColor();
 };
