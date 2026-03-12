@@ -1,8 +1,7 @@
 const page = document.body.dataset.page || "home";
 const header = document.querySelector(".appbar");
-const scrollContainer = document.querySelector("#app-scroll");
 const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
-document.body.classList.toggle("standalone-mode", isStandalone);
+document.documentElement.classList.toggle("page-color-header", page === "color-header");
 
 const syncAppViewportHeight = () => {
   if (isStandalone) {
@@ -53,7 +52,7 @@ const triggerThemeAnimation = () => {
 };
 
 const syncAppbarTone = () => {
-  const scrollTop = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
+  const scrollTop = window.scrollY;
   const heroCutoff = heroHeader ? Math.max(0, heroHeader.offsetHeight - appbarToneReleaseOffset) : 0;
   const isHeroZone = page === "color-header" && heroHeader && scrollTop < heroCutoff;
   const shouldForceDark = isHeroZone && !darkSchemeQuery.matches;
@@ -99,16 +98,12 @@ document.addEventListener("visibilitychange", () => {
 });
 
 const syncScrollState = () => {
-  const scrollTop = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
+  const scrollTop = window.scrollY;
   document.body.classList.toggle("scrolled", scrollTop > 0);
   syncThemeColor();
 };
 syncScrollState();
-if (scrollContainer) {
-  scrollContainer.addEventListener("scroll", syncScrollState, { passive: true });
-} else {
-  window.addEventListener("scroll", syncScrollState, { passive: true });
-}
+window.addEventListener("scroll", syncScrollState, { passive: true });
 
 const cards = document.querySelector("#cards");
 const cardTemplate = document.querySelector("#card-template");
