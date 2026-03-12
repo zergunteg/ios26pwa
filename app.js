@@ -40,8 +40,9 @@ const triggerThemeAnimation = () => {
 const syncAppbarTone = () => {
   const scrollTop = scrollContainer ? scrollContainer.scrollTop : window.scrollY;
   const heroCutoff = heroHeader ? Math.max(0, heroHeader.offsetHeight - appbarToneReleaseOffset) : 0;
-  const shouldForceDark =
-    page === "color-header" && !darkSchemeQuery.matches && heroHeader && scrollTop < heroCutoff;
+  const isHeroZone = page === "color-header" && heroHeader && scrollTop < heroCutoff;
+  const shouldForceDark = isHeroZone && !darkSchemeQuery.matches;
+  document.body.classList.toggle("shell-hero-bg", Boolean(isHeroZone));
   document.body.classList.toggle("appbar-dark-forced", Boolean(shouldForceDark));
   return Boolean(shouldForceDark);
 };

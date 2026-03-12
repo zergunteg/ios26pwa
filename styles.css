@@ -83,6 +83,7 @@ body {
   min-height: 100dvh;
   background: var(--bg-page);
   overflow: hidden;
+  transition: background-color 75ms linear;
 }
 
 .app-scroll {
@@ -301,8 +302,9 @@ body.scrolled .title {
 }
 
 .screen {
-  min-height: calc(100vh - env(safe-area-inset-top) - var(--appbar-height));
-  padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px 40px;
+  min-height: calc(100dvh - env(safe-area-inset-top) - var(--appbar-height));
+  padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 16px calc(40px + env(safe-area-inset-bottom));
+  background: var(--bg-page);
 }
 
 .content-title {
@@ -392,7 +394,7 @@ body.scrolled .content-title {
 }
 
 .screen--hero {
-  padding: 0 0 40px;
+  padding: 0 0 calc(40px + env(safe-area-inset-bottom));
 }
 
 .hero-header {
@@ -514,6 +516,10 @@ body.appbar-dark-forced .appbar-btn::after {
 
 body.appbar-dark-forced .title {
   color: #ffffff;
+}
+
+body.shell-hero-bg .app-shell {
+  background: var(--hero-header-bg);
 }
 
 body.theme-animating {
