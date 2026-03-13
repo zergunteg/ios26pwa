@@ -7,6 +7,20 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="apple-mobile-web-app-title" content="iOS26 AppBar" />
+    <script>
+      (() => {
+        try {
+          const nav = performance.getEntriesByType("navigation")[0];
+          let direction = sessionStorage.getItem("nav-direction") || "";
+          if (!direction && nav && nav.type === "back_forward") direction = "pop";
+          if (!direction) direction = "none";
+          document.documentElement.setAttribute("data-nav-direction", direction);
+          sessionStorage.removeItem("nav-direction");
+        } catch {
+          document.documentElement.setAttribute("data-nav-direction", "none");
+        }
+      })();
+    </script>
     <title>Цветная шапка</title>
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />

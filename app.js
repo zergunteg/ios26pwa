@@ -4,6 +4,14 @@ const isStandalone = window.matchMedia("(display-mode: standalone)").matches || 
 document.documentElement.classList.toggle("page-color-header", page === "color-header");
 document.documentElement.classList.toggle("page-color-content", page === "color-content");
 
+const setNavDirection = (direction) => {
+  try {
+    sessionStorage.setItem("nav-direction", direction);
+  } catch {
+    // no-op
+  }
+};
+
 const syncAppViewportHeight = () => {
   if (isStandalone) {
     document.documentElement.style.setProperty("--app-vh", `${window.innerHeight}px`);
@@ -151,9 +159,16 @@ if (cards && (page === "normal" || page === "color-header" || page === "color-co
 const backButton = document.querySelector("[data-back-to-home]");
 if (backButton) {
   backButton.addEventListener("click", () => {
+    setNavDirection("pop");
     window.location.href = "index.html";
   });
 }
+
+document.querySelectorAll("a.nav-link[href]").forEach((link) => {
+  link.addEventListener("click", () => {
+    setNavDirection("push");
+  });
+});
 
 const reloadBtn = document.querySelector("#reload-btn");
 const hardRefresh = async () => {
