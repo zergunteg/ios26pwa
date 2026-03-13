@@ -617,18 +617,27 @@ body.theme-animating .hero-title {
 
   ::view-transition-group(root) {
     animation-fill-mode: both;
+    isolation: isolate;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    position: absolute;
+    inset: 0;
   }
 
   html[data-nav-direction="push"]::view-transition-old(root) {
     animation-name: vt-old-push;
     animation-duration: var(--vt-duration-slow);
     animation-timing-function: var(--vt-expressive-standard);
+    z-index: 1;
   }
 
   html[data-nav-direction="push"]::view-transition-new(root) {
     animation-name: vt-new-push;
     animation-duration: var(--vt-duration-slow);
     animation-timing-function: var(--vt-expressive-standard);
+    z-index: 2;
   }
 
   html[data-nav-direction="pop"]::view-transition-old(root) {
