@@ -659,7 +659,7 @@ body.theme-animating .hero-title {
 
 @keyframes vt-new-push {
   from {
-    transform: translateX(var(--vt-offset));
+    transform: translateX(100%);
     opacity: 1;
   }
   to {
@@ -675,7 +675,7 @@ body.theme-animating .hero-title {
     filter: brightness(0.92);
   }
   to {
-    transform: translateX(var(--vt-offset));
+    transform: translateX(100%);
     opacity: 1;
     filter: brightness(1);
   }
