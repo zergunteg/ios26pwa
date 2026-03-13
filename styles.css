@@ -687,11 +687,11 @@ html[data-nav-direction="push"]:not(:active-view-transition) .appbar,
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn,
 html[data-nav-direction="push"]:not(:active-view-transition) .title,
 {
-  animation: appbar-enter-fade 150ms ease both;
+  animation: appbar-enter-fade 150ms ease var(--vt-duration-slow) both;
 }
 
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn svg {
-  animation: appbar-icon-deblur 150ms ease both;
+  animation: appbar-icon-deblur 150ms ease var(--vt-duration-slow) both;
 }
 
 @keyframes vt-old-push {
