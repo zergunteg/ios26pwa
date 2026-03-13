@@ -23,6 +23,7 @@
   );
   --button-icon: #333333;
   --button-glow: rgba(255, 255, 255, 1);
+  --back-icon-tone-filter: brightness(1);
   --appbar-overlay-0: rgba(255, 255, 255, 1);
   --appbar-overlay-1: rgba(255, 255, 255, 0.95);
   --appbar-overlay-2: rgba(255, 255, 255, 0.82);
@@ -54,6 +55,7 @@
     --button-bevel: rgba(255, 255, 255, 0.2);
     --button-icon: #ffffff;
     --button-glow: rgba(31, 31, 31, 0.8);
+    --back-icon-tone-filter: brightness(0) invert(1);
     --appbar-overlay-0: rgba(0, 0, 0, 1);
     --appbar-overlay-1: rgba(0, 0, 0, 0.95);
     --appbar-overlay-2: rgba(0, 0, 0, 0.82);
@@ -263,6 +265,21 @@ body {
   mask-composite: exclude;
   filter: brightness(1.1);
   pointer-events: none;
+}
+
+.appbar-icon {
+  display: block;
+  width: 20.4px;
+  height: 20.4px;
+  flex: 0 0 auto;
+}
+
+.appbar-icon-back {
+  filter: var(--back-icon-tone-filter);
+}
+
+body.appbar-dark-forced {
+  --back-icon-tone-filter: brightness(0) invert(1);
 }
 
 .appbar-btn:focus,
@@ -608,7 +625,8 @@ body.theme-animating .hero-title {
     --vt-expressive-standard: cubic-bezier(0.4, 0.1, 0.2, 1);
     --vt-expressive-exit: cubic-bezier(0.4, 0, 1, 1);
     --vt-duration-slow: 300ms;
-    --vt-duration-moderate: 300ms;
+    --vt-duration-moderate: 150ms;
+    --appbar-enter-delay: 150ms;
     --vt-offset: 100px;
   }
 
@@ -687,12 +705,17 @@ body.theme-animating .hero-title {
 
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar,
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn {
-  animation: appbar-enter-fade 100ms ease var(--vt-duration-slow) both;
+  animation: appbar-enter-fade 100ms ease var(--appbar-enter-delay) both;
 }
 
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn svg {
   will-change: filter;
-  animation: appbar-icon-deblur 400ms ease var(--vt-duration-slow) both;
+  animation: appbar-icon-deblur 200ms ease var(--appbar-enter-delay) both;
+}
+
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar-icon-back {
+  will-change: filter;
+  animation: appbar-icon-back-deblur 200ms ease var(--appbar-enter-delay) both;
 }
 
 @keyframes vt-old-push {
@@ -760,5 +783,14 @@ html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn svg {
   to {
     filter: blur(0);
     -webkit-filter: blur(0);
+  }
+}
+
+@keyframes appbar-icon-back-deblur {
+  from {
+    filter: var(--back-icon-tone-filter) blur(16px);
+  }
+  to {
+    filter: var(--back-icon-tone-filter) blur(0);
   }
 }
