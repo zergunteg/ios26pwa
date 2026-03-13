@@ -676,6 +676,24 @@ body.theme-animating .hero-title {
   transition: none !important;
 }
 
+:root:active-view-transition .appbar,
+:root:active-view-transition .appbar-btn,
+:root:active-view-transition .title {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar,
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn,
+html[data-nav-direction="push"]:not(:active-view-transition) .title,
+{
+  animation: appbar-enter-fade 150ms ease both;
+}
+
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn svg {
+  animation: appbar-icon-deblur 150ms ease both;
+}
+
 @keyframes vt-old-push {
   from {
     transform: translateX(0);
@@ -721,5 +739,25 @@ body.theme-animating .hero-title {
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@keyframes appbar-enter-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes appbar-icon-deblur {
+  from {
+    filter: blur(4px);
+    -webkit-filter: blur(4px);
+  }
+  to {
+    filter: blur(0);
+    -webkit-filter: blur(0);
   }
 }
