@@ -105,6 +105,7 @@ body {
   background: transparent;
   position: relative;
   isolation: isolate;
+  view-transition-name: page-shell;
 }
 
 .app-shell::before {
@@ -616,43 +617,63 @@ body.theme-animating .hero-title {
   }
 
   ::view-transition-group(root) {
-    animation-fill-mode: both;
-    isolation: isolate;
+    animation: none !important;
   }
 
   ::view-transition-old(root),
   ::view-transition-new(root) {
-    position: absolute;
-    inset: 0;
+    animation: none !important;
   }
 
-  html[data-nav-direction="push"]::view-transition-old(root) {
+  ::view-transition-group(page-shell) {
+    animation-fill-mode: both;
+    isolation: isolate;
+  }
+
+  ::view-transition-old(page-shell),
+  ::view-transition-new(page-shell) {
+    position: absolute;
+    inset: 0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    will-change: transform, opacity, filter;
+  }
+
+  html[data-nav-direction="push"]::view-transition-old(page-shell) {
     animation-name: vt-old-push;
     animation-duration: var(--vt-duration-slow);
     animation-timing-function: var(--vt-expressive-standard);
     z-index: 1;
   }
 
-  html[data-nav-direction="push"]::view-transition-new(root) {
+  html[data-nav-direction="push"]::view-transition-new(page-shell) {
     animation-name: vt-new-push;
     animation-duration: var(--vt-duration-slow);
     animation-timing-function: var(--vt-expressive-standard);
     z-index: 2;
   }
 
-  html[data-nav-direction="pop"]::view-transition-old(root) {
+  html[data-nav-direction="pop"]::view-transition-old(page-shell) {
     animation-name: vt-old-pop;
     animation-duration: var(--vt-duration-moderate);
     animation-timing-function: var(--vt-expressive-exit);
     z-index: 2;
   }
 
-  html[data-nav-direction="pop"]::view-transition-new(root) {
+  html[data-nav-direction="pop"]::view-transition-new(page-shell) {
     animation-name: vt-new-pop;
     animation-duration: var(--vt-duration-moderate);
     animation-timing-function: var(--vt-expressive-exit);
     z-index: 1;
   }
+}
+
+:root:active-view-transition .appbar-btn::before,
+:root:active-view-transition .appbar-btn::after {
+  filter: none !important;
+  transition: none !important;
 }
 
 @keyframes vt-old-push {
