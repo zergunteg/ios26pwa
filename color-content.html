@@ -13,6 +13,7 @@
           const nav = performance.getEntriesByType("navigation")[0];
           let direction = sessionStorage.getItem("nav-direction") || "";
           if (!direction && nav && nav.type === "back_forward") direction = "pop";
+          if (!direction && nav && nav.type === "navigate") direction = "push";
           if (!direction) direction = "none";
           document.documentElement.setAttribute("data-nav-direction", direction);
           sessionStorage.removeItem("nav-direction");

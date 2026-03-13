@@ -607,7 +607,7 @@ body.theme-animating .hero-title {
   :root {
     --vt-expressive-standard: cubic-bezier(0.4, 0.1, 0.2, 1);
     --vt-expressive-exit: cubic-bezier(0.4, 0, 1, 1);
-    --vt-duration-slow: 500ms;
+    --vt-duration-slow: 300ms;
     --vt-duration-moderate: 300ms;
     --vt-offset: 100px;
   }
@@ -641,14 +641,16 @@ body.theme-animating .hero-title {
     will-change: transform, opacity, filter;
   }
 
-  html[data-nav-direction="push"]::view-transition-old(page-shell) {
+  html[data-nav-direction="push"]::view-transition-old(page-shell),
+  html[data-nav-direction="none"]::view-transition-old(page-shell) {
     animation-name: vt-old-push;
     animation-duration: var(--vt-duration-slow);
     animation-timing-function: var(--vt-expressive-standard);
     z-index: 1;
   }
 
-  html[data-nav-direction="push"]::view-transition-new(page-shell) {
+  html[data-nav-direction="push"]::view-transition-new(page-shell),
+  html[data-nav-direction="none"]::view-transition-new(page-shell) {
     animation-name: vt-new-push;
     animation-duration: var(--vt-duration-slow);
     animation-timing-function: var(--vt-expressive-standard);
@@ -684,14 +686,13 @@ body.theme-animating .hero-title {
 }
 
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar,
-html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn,
-html[data-nav-direction="push"]:not(:active-view-transition) .title,
-{
-  animation: appbar-enter-fade 150ms ease var(--vt-duration-slow) both;
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn {
+  animation: appbar-enter-fade 100ms ease var(--vt-duration-slow) both;
 }
 
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn svg {
-  animation: appbar-icon-deblur 150ms ease var(--vt-duration-slow) both;
+  will-change: filter;
+  animation: appbar-icon-deblur 400ms ease var(--vt-duration-slow) both;
 }
 
 @keyframes vt-old-push {
@@ -753,8 +754,8 @@ html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn svg {
 
 @keyframes appbar-icon-deblur {
   from {
-    filter: blur(4px);
-    -webkit-filter: blur(4px);
+    filter: blur(16px);
+    -webkit-filter: blur(16px);
   }
   to {
     filter: blur(0);
