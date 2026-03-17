@@ -24,6 +24,14 @@
   --button-icon: #333333;
   --button-glow: rgba(255, 255, 255, 1);
   --back-icon-tone-filter: brightness(1);
+  --tabbar-bg: rgba(255, 255, 255, 0.7);
+  --tabbar-border: rgba(255, 255, 255, 0.4);
+  --tabbar-glow: rgba(255, 255, 255, 1);
+  --tabbar-tab-active-bg: rgba(0, 16, 36, 0.06);
+  --tabbar-tab-idle: #333333;
+  --tabbar-tab-active: #428bf9;
+  --tabbar-icon-filter-idle: none;
+  --tabbar-icon-filter-active: brightness(0) saturate(100%) invert(53%) sepia(68%) saturate(2108%) hue-rotate(196deg) brightness(99%) contrast(97%);
   --appbar-overlay-0: rgba(255, 255, 255, 1);
   --appbar-overlay-1: rgba(255, 255, 255, 0.95);
   --appbar-overlay-2: rgba(255, 255, 255, 0.82);
@@ -56,6 +64,12 @@
     --button-icon: #ffffff;
     --button-glow: rgba(31, 31, 31, 0.8);
     --back-icon-tone-filter: brightness(0) invert(1);
+    --tabbar-bg: rgba(88, 88, 88, 0.31);
+    --tabbar-border: rgba(255, 255, 255, 0.2);
+    --tabbar-glow: rgba(31, 31, 31, 0.8);
+    --tabbar-tab-active-bg: rgba(255, 255, 255, 0.16);
+    --tabbar-tab-idle: #ffffff;
+    --tabbar-icon-filter-idle: brightness(0) invert(1);
     --appbar-overlay-0: rgba(0, 0, 0, 1);
     --appbar-overlay-1: rgba(0, 0, 0, 0.95);
     --appbar-overlay-2: rgba(0, 0, 0, 0.82);
@@ -442,8 +456,141 @@ body.scrolled .content-title {
   padding: calc(var(--appbar-height) + env(safe-area-inset-top) + 20px) 0 calc(180px + env(safe-area-inset-bottom));
 }
 
+.screen--tabbar-list {
+  padding-bottom: calc(140px + env(safe-area-inset-bottom));
+}
+
 .screen--color-content .content-title {
   padding: 0 16px;
+}
+
+.tabbar-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 20px max(env(safe-area-inset-bottom), 20px);
+  z-index: 9000;
+  display: flex;
+  justify-content: center;
+}
+
+.tabbar {
+  width: fit-content;
+  max-width: 100%;
+  height: 62px;
+  padding: 4px;
+  border: none;
+  border-radius: 999px;
+  background: var(--tabbar-bg);
+  backdrop-filter: blur(4px) saturate(6) brightness(1.1);
+  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.tabbar-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tabbar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 12px var(--tabbar-glow);
+  filter: brightness(1.05);
+  pointer-events: none;
+}
+
+.tabbar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-sizing: border-box;
+  padding: 1px;
+  background: var(--button-bevel-gradient);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  filter: brightness(1.1);
+  pointer-events: none;
+}
+
+.tabbar-tab {
+  min-width: 94px;
+  max-width: 94px;
+  height: 54px;
+  flex: 0 1 auto;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--tabbar-tab-idle);
+  padding: 6px 8px 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0;
+  font: inherit;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+.tabbar-input:checked + .tabbar-tab {
+  background: var(--tabbar-tab-active-bg);
+  color: var(--tabbar-tab-active);
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(5)) {
+  width: 100%;
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(5)) .tabbar-tab {
+  min-width: 0;
+  max-width: none;
+  flex: 1 1 0;
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(5)) .tabbar-tab:not(:first-of-type) {
+  margin-left: -8px;
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(5)) .tabbar-input:checked + .tabbar-tab {
+  position: relative;
+  z-index: 1;
+}
+
+.tabbar-tab-icon {
+  width: 28px;
+  height: 28px;
+  margin-bottom: 1px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url("icons/tab-icon.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  filter: var(--tabbar-icon-filter-idle);
+}
+
+.tabbar-input:checked + .tabbar-tab .tabbar-tab-icon {
+  filter: var(--tabbar-icon-filter-active);
+}
+
+.tabbar-tab-label {
+  font-size: 10px;
+  line-height: 1.2;
+  font-weight: 500;
+  text-align: center;
 }
 
 .screen--color-content .color-content-rect:first-of-type {
@@ -624,8 +771,8 @@ body.theme-animating .hero-title {
   :root {
     --vt-expressive-standard: cubic-bezier(0.4, 0.1, 0.2, 1);
     --vt-expressive-exit: cubic-bezier(0.4, 0, 1, 1);
-    --vt-duration-slow: 300ms;
-    --vt-duration-moderate: 150ms;
+    --vt-duration-slow: 500ms;
+    --vt-duration-moderate: 300ms;
     --appbar-enter-delay: 150ms;
     --vt-offset: 100px;
   }

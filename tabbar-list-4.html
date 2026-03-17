@@ -22,30 +22,16 @@
         }
       })();
     </script>
-    <title>iOS26 AppBar Test</title>
+    <title>4 элемента в таббаре</title>
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body data-page="home">
+  <body data-page="tabbar-list-4">
     <div class="app-shell">
       <header class="appbar">
-        <button class="appbar-btn close-btn" aria-label="Закрыть">
-          <svg width="20.4" height="20.4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <g clip-path="url(#clip0_90085_719)">
-              <mask id="mask0_90085_719" style="mask-type: alpha" maskUnits="userSpaceOnUse" x="3" y="3" width="19" height="18">
-                <path d="M4.31703 20.4484C3.85511 19.9972 3.86586 19.2023 4.31703 18.7619L10.9235 12.1447L4.31703 5.53822C3.86586 5.09779 3.85511 4.31361 4.31703 3.84095C4.77894 3.37904 5.56312 3.38978 6.01429 3.84095L12.6207 10.4474L19.2272 3.84095C19.6891 3.38978 20.4518 3.38978 20.9244 3.8517C21.3971 4.30287 21.3864 5.08705 20.9352 5.53822L14.3287 12.1447L20.9352 18.7619C21.3864 19.213 21.3864 19.9865 20.9244 20.4484C20.4625 20.921 19.6891 20.9103 19.2272 20.4591L12.6207 13.8527L6.01429 20.4591C5.56312 20.9103 4.78968 20.9103 4.31703 20.4484Z" fill="black"/>
-              </mask>
-              <g mask="url(#mask0_90085_719)">
-                <rect width="24" height="24" fill="currentColor"/>
-              </g>
-            </g>
-            <defs>
-              <clipPath id="clip0_90085_719">
-                <rect width="24" height="24" fill="white"/>
-              </clipPath>
-            </defs>
-          </svg>
+        <button class="appbar-btn close-btn" data-back-to-home data-back-href="tabbar-list.html" aria-label="Назад">
+          <img class="appbar-icon appbar-icon-back" src="icons/chevron-left.svg" alt="" aria-hidden="true" />
         </button>
         <button class="appbar-btn reload-btn" id="reload-btn" aria-label="Обновить">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -59,46 +45,49 @@
             </defs>
           </svg>
         </button>
-        <h1 class="title">Демо</h1>
+        <h1 class="title">4 элемента в таббаре</h1>
       </header>
-      <main class="screen">
-        <h2 class="content-title">Демо</h2>
-        <div class="cards">
-          <a class="nav-link" href="normal.html">
-            <section class="card">
-              <p>
-                <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Обычный список</span>
-              </p>
-            </section>
-          </a>
-          <a class="nav-link" href="color-header.html">
-            <section class="card">
-              <p>
-                <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Цветная шапка</span>
-              </p>
-            </section>
-          </a>
-          <a class="nav-link" href="color-content.html">
-            <section class="card">
-              <p>
-                <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Цветные фоны</span>
-              </p>
-            </section>
-          </a>
-          <a class="nav-link" href="tabbar-list.html">
-            <section class="card">
-              <p>
-                <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Список с таббаром</span>
-              </p>
-            </section>
-          </a>
-        </div>
+
+      <main class="screen screen--tabbar-list">
+        <h2 class="content-title">4 элемента в таббаре</h2>
+        <div class="cards" id="cards"></div>
       </main>
+
+      <nav class="tabbar-wrap" aria-label="Таббар">
+        <div class="tabbar">
+          <input class="tabbar-input" type="radio" name="tabbar-4" id="tabbar-4-1" checked />
+          <label class="tabbar-tab" for="tabbar-4-1" aria-current="page">
+            <span class="tabbar-tab-icon" aria-hidden="true"></span>
+            <span class="tabbar-tab-label">Лента</span>
+          </label>
+          <input class="tabbar-input" type="radio" name="tabbar-4" id="tabbar-4-2" />
+          <label class="tabbar-tab" for="tabbar-4-2">
+            <span class="tabbar-tab-icon" aria-hidden="true"></span>
+            <span class="tabbar-tab-label">Поиск</span>
+          </label>
+          <input class="tabbar-input" type="radio" name="tabbar-4" id="tabbar-4-3" />
+          <label class="tabbar-tab" for="tabbar-4-3">
+            <span class="tabbar-tab-icon" aria-hidden="true"></span>
+            <span class="tabbar-tab-label">Избранное</span>
+          </label>
+          <input class="tabbar-input" type="radio" name="tabbar-4" id="tabbar-4-4" />
+          <label class="tabbar-tab" for="tabbar-4-4">
+            <span class="tabbar-tab-icon" aria-hidden="true"></span>
+            <span class="tabbar-tab-label">Профиль</span>
+          </label>
+        </div>
+      </nav>
+
+      <template id="card-template">
+        <section class="card">
+          <p>
+            <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
+            <span>Card title</span>
+          </p>
+        </section>
+      </template>
     </div>
+
     <script src="app.js"></script>
   </body>
 </html>

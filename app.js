@@ -151,7 +151,16 @@ window.addEventListener("scroll", syncScrollState, { passive: true });
 
 const cards = document.querySelector("#cards");
 const cardTemplate = document.querySelector("#card-template");
-if (cards && (page === "normal" || page === "color-header" || page === "color-content")) {
+if (
+  cards &&
+  (page === "normal" ||
+    page === "color-header" ||
+    page === "color-content" ||
+    page === "tabbar-list-2" ||
+    page === "tabbar-list-3" ||
+    page === "tabbar-list-4" ||
+    page === "tabbar-list-5")
+) {
   const cardMarkup = cardTemplate ? cardTemplate.innerHTML.trim() : "";
   cards.innerHTML = Array.from({ length: 20 }, () => cardMarkup).join("");
 }
@@ -160,7 +169,8 @@ const backButton = document.querySelector("[data-back-to-home]");
 if (backButton) {
   backButton.addEventListener("click", () => {
     setNavDirection("pop");
-    window.location.href = "index.html";
+    const backHref = backButton.dataset.backHref || "index.html";
+    window.location.href = backHref;
   });
 }
 
