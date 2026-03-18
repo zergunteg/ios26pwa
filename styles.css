@@ -6,7 +6,6 @@
   --card-border: rgba(255, 255, 255, 0.9);
   --text-primary: #333333;
   --button-bg: rgba(255, 255, 255, 0.7);
-  --button-bevel: rgba(255, 255, 255, 0.4);
   --button-bevel-gradient: linear-gradient(
     230deg,
     rgba(255, 255, 255, 0) 5%,
@@ -23,15 +22,28 @@
   );
   --button-icon: #333333;
   --button-glow: rgba(255, 255, 255, 1);
-  --back-icon-tone-filter: brightness(1);
+  --appbar-icon-tone-filter: brightness(1);
   --tabbar-bg: rgba(255, 255, 255, 0.7);
-  --tabbar-border: rgba(255, 255, 255, 0.4);
   --tabbar-glow: rgba(255, 255, 255, 1);
+  --tabbar-bevel-gradient: linear-gradient(
+    227deg,
+    rgba(255, 255, 255, 0) 6%,
+    rgba(255, 255, 255, 0.35) 21%,
+    rgba(255, 255, 255, 0.85) 40%,
+    rgba(255, 255, 255, 0.95) 45%,
+    #fff 48%,
+    #fff 50%,
+    #fff 52%,
+    rgba(255, 255, 255, 0.95) 55%,
+    rgba(255, 255, 255, 0.85) 60%,
+    rgba(255, 255, 255, 0.35) 80%,
+    rgba(255, 255, 255, 0) 95%
+  );
+  --tabbar-bevel-brightness: 1.1;
   --tabbar-tab-active-bg: rgba(0, 16, 36, 0.06);
   --tabbar-tab-idle: #333333;
   --tabbar-tab-active: #428bf9;
-  --tabbar-icon-filter-idle: none;
-  --tabbar-icon-filter-active: brightness(0) saturate(100%) invert(53%) sepia(68%) saturate(2108%) hue-rotate(196deg) brightness(99%) contrast(97%);
+  --tabbar-idle-icon-filter: none;
   --appbar-overlay-0: rgba(255, 255, 255, 1);
   --appbar-overlay-1: rgba(255, 255, 255, 0.95);
   --appbar-overlay-2: rgba(255, 255, 255, 0.82);
@@ -41,7 +53,6 @@
   --hero-header-bg: #333333;
   --appbar-height: 70px;
   --close-size: 44px;
-  --icon-size: 24px;
   --title-size: 17px;
   --left-gap: 16px;
   --expressive-entrance: cubic-bezier(0.35, 1.3, 0.25, 1);
@@ -60,16 +71,15 @@
     --card-border: rgba(255, 255, 255, 0.08);
     --text-primary: #ffffff;
     --button-bg: rgba(88, 88, 88, 0.31);
-    --button-bevel: rgba(255, 255, 255, 0.2);
     --button-icon: #ffffff;
     --button-glow: rgba(31, 31, 31, 0.8);
-    --back-icon-tone-filter: brightness(0) invert(1);
+    --appbar-icon-tone-filter: brightness(0) invert(1);
     --tabbar-bg: rgba(88, 88, 88, 0.31);
-    --tabbar-border: rgba(255, 255, 255, 0.2);
     --tabbar-glow: rgba(31, 31, 31, 0.8);
     --tabbar-tab-active-bg: rgba(255, 255, 255, 0.16);
     --tabbar-tab-idle: #ffffff;
-    --tabbar-icon-filter-idle: brightness(0) invert(1);
+    --tabbar-bevel-brightness: 0.6;
+    --tabbar-idle-icon-filter: brightness(0) invert(1);
     --appbar-overlay-0: rgba(0, 0, 0, 1);
     --appbar-overlay-1: rgba(0, 0, 0, 0.95);
     --appbar-overlay-2: rgba(0, 0, 0, 0.82);
@@ -288,12 +298,12 @@ body {
   flex: 0 0 auto;
 }
 
-.appbar-icon-back {
-  filter: var(--back-icon-tone-filter);
+.appbar-icon-toned {
+  filter: var(--appbar-icon-tone-filter);
 }
 
 body.appbar-dark-forced {
-  --back-icon-tone-filter: brightness(0) invert(1);
+  --appbar-icon-tone-filter: brightness(0) invert(1);
 }
 
 .appbar-btn:focus,
@@ -304,25 +314,6 @@ body.appbar-dark-forced {
 .appbar-btn:active {
   transform: translateY(-50%) scale(1.25);
   filter: brightness(3);
-}
-
-@keyframes close-btn-bounce {
-  0% {
-    transform: translateY(-50%) scale(1);
-    filter: brightness(1);
-  }
-  38% {
-    transform: translateY(-50%) scale(1.1);
-    filter: brightness(1.22);
-  }
-  65% {
-    transform: translateY(-50%) scale(0.98);
-    filter: brightness(1.06);
-  }
-  100% {
-    transform: translateY(-50%) scale(1);
-    filter: brightness(1);
-  }
 }
 
 .title {
@@ -476,10 +467,16 @@ body.scrolled .content-title {
 }
 
 .tabbar {
+  --tab-count: 2;
+  --tab-width: 94px;
+  --active-index: 1;
+  --tabbar-pad: 4px;
+  --active-pad-left: 0px;
+  --active-pad-right: 0px;
   width: fit-content;
   max-width: 100%;
   height: 62px;
-  padding: 4px;
+  padding: var(--tabbar-pad);
   border: none;
   border-radius: 999px;
   background: var(--tabbar-bg);
@@ -516,19 +513,20 @@ body.scrolled .content-title {
   border-radius: inherit;
   box-sizing: border-box;
   padding: 1px;
-  background: var(--button-bevel-gradient);
+  background: var(--tabbar-bevel-gradient);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  filter: brightness(1.1);
+  filter: brightness(var(--tabbar-bevel-brightness));
   pointer-events: none;
 }
 
 .tabbar-tab {
   min-width: 94px;
   max-width: 94px;
+  width: var(--tab-width);
   height: 54px;
-  flex: 0 1 auto;
+  flex: 0 0 var(--tab-width);
   border: 0;
   border-radius: 999px;
   background: transparent;
@@ -542,48 +540,143 @@ body.scrolled .content-title {
   font: inherit;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
+  position: relative;
+  z-index: 2;
 }
 
 .tabbar-input:checked + .tabbar-tab {
-  background: var(--tabbar-tab-active-bg);
   color: var(--tabbar-tab-active);
 }
 
-.tabbar:has(.tabbar-tab:nth-of-type(5)) {
-  width: 100%;
+.tabbar-active {
+  position: absolute;
+  top: var(--tabbar-pad);
+  left: calc(
+    var(--tabbar-pad) + ((100% - (var(--tabbar-pad) * 2) - var(--tab-width)) * (var(--active-index) - 1) / (var(--tab-count) - 1)) -
+      var(--active-pad-left)
+  );
+  width: calc(var(--tab-width) + var(--active-pad-left) + var(--active-pad-right));
+  height: 54px;
+  border-radius: 999px;
+  background: var(--tabbar-tab-active-bg);
+  transition: left 300ms cubic-bezier(0.4, 0.1, 0.2, 1);
+  z-index: 1;
+  pointer-events: none;
 }
 
-.tabbar:has(.tabbar-tab:nth-of-type(5)) .tabbar-tab {
+.tabbar:has(.tabbar-tab:nth-of-type(3)) {
+  --tab-count: 3;
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(4)) {
+  --tab-count: 4;
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(4)) {
+  width: 100%;
+  --tab-width: calc((100% - (var(--tabbar-pad) * 2)) / var(--tab-count));
+  display: grid;
+  align-items: center;
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(4)):not(:has(.tabbar-tab:nth-of-type(5))) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(5)) {
+  --tab-count: 5;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.tabbar:has(.tabbar-tab:nth-of-type(4)) .tabbar-tab {
   min-width: 0;
   max-width: none;
-  flex: 1 1 0;
+  width: auto;
+  flex: none;
 }
 
-.tabbar:has(.tabbar-tab:nth-of-type(5)) .tabbar-tab:not(:first-of-type) {
-  margin-left: -8px;
+.tabbar:has(.tabbar-input:nth-of-type(1):checked) {
+  --active-index: 1;
+  --active-pad-left: 0px;
+  --active-pad-right: 0px;
 }
 
-.tabbar:has(.tabbar-tab:nth-of-type(5)) .tabbar-input:checked + .tabbar-tab {
-  position: relative;
-  z-index: 1;
+.tabbar:has(.tabbar-input:nth-of-type(2):checked) {
+  --active-index: 2;
+  --active-pad-left: 0px;
+  --active-pad-right: 0px;
+}
+
+.tabbar:has(.tabbar-input:nth-of-type(3):checked) {
+  --active-index: 3;
+  --active-pad-left: 0px;
+  --active-pad-right: 0px;
+}
+
+.tabbar:has(.tabbar-input:nth-of-type(4):checked) {
+  --active-index: 4;
+  --active-pad-left: 0px;
+  --active-pad-right: 0px;
+}
+
+.tabbar:has(.tabbar-input:nth-of-type(5):checked) {
+  --active-index: 5;
+  --active-pad-left: 0px;
+  --active-pad-right: 0px;
+}
+
+/* 3 tabs: only the center tab is expanded */
+.tabbar:has(.tabbar-tab:nth-of-type(3)):not(:has(.tabbar-tab:nth-of-type(4))):has(.tabbar-input:nth-of-type(2):checked) {
+  --active-pad-left: 4px;
+  --active-pad-right: 4px;
+}
+
+/* 4 tabs: tabs 2 and 3 are expanded */
+.tabbar:has(.tabbar-tab:nth-of-type(4)):not(:has(.tabbar-tab:nth-of-type(5))):has(.tabbar-input:nth-of-type(2):checked),
+.tabbar:has(.tabbar-tab:nth-of-type(4)):not(:has(.tabbar-tab:nth-of-type(5))):has(.tabbar-input:nth-of-type(3):checked) {
+  --active-pad-left: 4px;
+  --active-pad-right: 4px;
+}
+
+/* 5 tabs: tabs 2, 3 and 4 are expanded */
+.tabbar:has(.tabbar-tab:nth-of-type(5)):has(.tabbar-input:nth-of-type(2):checked),
+.tabbar:has(.tabbar-tab:nth-of-type(5)):has(.tabbar-input:nth-of-type(3):checked),
+.tabbar:has(.tabbar-tab:nth-of-type(5)):has(.tabbar-input:nth-of-type(4):checked) {
+  --active-pad-left: 4px;
+  --active-pad-right: 4px;
 }
 
 .tabbar-tab-icon {
   width: 28px;
   height: 28px;
   margin-bottom: 1px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background-image: url("icons/tab-icon.svg");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 24px 24px;
-  filter: var(--tabbar-icon-filter-idle);
+  display: inline-block;
+  position: relative;
+  flex: 0 0 auto;
 }
 
-.tabbar-input:checked + .tabbar-tab .tabbar-tab-icon {
-  filter: var(--tabbar-icon-filter-active);
+.tabbar-tab-icon-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.tabbar-tab-icon-img--active {
+  opacity: 0;
+}
+
+.tabbar-tab-icon-img--idle {
+  filter: var(--tabbar-idle-icon-filter);
+}
+
+.tabbar-input:checked + .tabbar-tab .tabbar-tab-icon-img--idle {
+  opacity: 0;
+}
+
+.tabbar-input:checked + .tabbar-tab .tabbar-tab-icon-img--active {
+  opacity: 1;
 }
 
 .tabbar-tab-label {
@@ -855,7 +948,7 @@ html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn {
   animation: appbar-enter-fade 100ms ease var(--appbar-enter-delay) both;
 }
 
-html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn svg {
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar-icon-toned {
   will-change: filter;
   animation: appbar-icon-deblur 200ms ease var(--appbar-enter-delay) both;
 }
@@ -935,9 +1028,9 @@ html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar
 
 @keyframes appbar-icon-back-deblur {
   from {
-    filter: var(--back-icon-tone-filter) blur(16px);
+    filter: var(--appbar-icon-tone-filter) blur(16px);
   }
   to {
-    filter: var(--back-icon-tone-filter) blur(0);
+    filter: var(--appbar-icon-tone-filter) blur(0);
   }
 }

@@ -151,16 +151,7 @@ window.addEventListener("scroll", syncScrollState, { passive: true });
 
 const cards = document.querySelector("#cards");
 const cardTemplate = document.querySelector("#card-template");
-if (
-  cards &&
-  (page === "normal" ||
-    page === "color-header" ||
-    page === "color-content" ||
-    page === "tabbar-list-2" ||
-    page === "tabbar-list-3" ||
-    page === "tabbar-list-4" ||
-    page === "tabbar-list-5")
-) {
+if (cards && cardTemplate) {
   const cardMarkup = cardTemplate ? cardTemplate.innerHTML.trim() : "";
   cards.innerHTML = Array.from({ length: 20 }, () => cardMarkup).join("");
 }
@@ -197,16 +188,5 @@ const hardRefresh = async () => {
 if (reloadBtn) {
   reloadBtn.addEventListener("click", () => {
     hardRefresh().catch(() => window.location.reload());
-  });
-}
-
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", async () => {
-    const registrations = await navigator.serviceWorker.getRegistrations();
-    await Promise.all(registrations.map((registration) => registration.unregister()));
-    if ("caches" in window) {
-      const keys = await caches.keys();
-      await Promise.all(keys.map((key) => caches.delete(key)));
-    }
   });
 }
