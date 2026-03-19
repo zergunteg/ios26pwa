@@ -2,7 +2,6 @@ const page = document.body.dataset.page || "home";
 const header = document.querySelector(".appbar");
 const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
 document.documentElement.classList.toggle("page-color-header", page === "color-header");
-document.documentElement.classList.toggle("page-color-content", page === "color-content");
 
 const setNavDirection = (direction) => {
   try {
@@ -15,8 +14,10 @@ const setNavDirection = (direction) => {
 const syncAppViewportHeight = () => {
   if (isStandalone) {
     document.documentElement.style.setProperty("--app-vh", `${window.innerHeight}px`);
+    document.documentElement.style.setProperty("--appbar-top-pad", "0px");
   } else {
     document.documentElement.style.removeProperty("--app-vh");
+    document.documentElement.style.removeProperty("--appbar-top-pad");
   }
 };
 

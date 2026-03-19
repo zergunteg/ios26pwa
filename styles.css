@@ -44,21 +44,29 @@
   --tabbar-tab-idle: #333333;
   --tabbar-tab-active: #428bf9;
   --tabbar-idle-icon-filter: none;
-  --appbar-overlay-0: rgba(255, 255, 255, 1);
-  --appbar-overlay-1: rgba(255, 255, 255, 0.95);
-  --appbar-overlay-2: rgba(255, 255, 255, 0.82);
-  --appbar-overlay-3: rgba(255, 255, 255, 0.56);
-  --appbar-overlay-4: rgba(255, 255, 255, 0.24);
-  --appbar-overlay-5: rgba(255, 255, 255, 0);
-  --tabbar-bottom-overlay-0: rgba(255, 255, 255, 1);
-  --tabbar-bottom-overlay-1: rgba(255, 255, 255, 0.95);
-  --tabbar-bottom-overlay-2: rgba(255, 255, 255, 0.82);
-  --tabbar-bottom-overlay-3: rgba(255, 255, 255, 0.56);
-  --tabbar-bottom-overlay-4: rgba(255, 255, 255, 0.24);
-  --tabbar-bottom-overlay-5: rgba(255, 255, 255, 0);
+  --appbar-overlay-gradient: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.95) 14%,
+    rgba(255, 255, 255, 0.82) 32%,
+    rgba(255, 255, 255, 0.56) 52%,
+    rgba(255, 255, 255, 0.24) 70%,
+    rgba(255, 255, 255, 0) 84%
+  );
+  --tabbar-bottom-overlay-gradient: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.95) 14%,
+    rgba(255, 255, 255, 0.82) 32%,
+    rgba(255, 255, 255, 0.56) 52%,
+    rgba(255, 255, 255, 0.24) 70%,
+    rgba(255, 255, 255, 0) 84%
+  );
   --hero-header-bg: #333333;
-  --appbar-height: 70px;
   --close-size: 44px;
+  --appbar-top-pad: 16px;
+  --appbar-bottom-pad: 16px;
+  --appbar-height: calc(var(--close-size) + var(--appbar-top-pad) + var(--appbar-bottom-pad));
   --title-size: 17px;
   --left-gap: 16px;
   --expressive-entrance: cubic-bezier(0.35, 1.3, 0.25, 1);
@@ -67,6 +75,12 @@
 @supports (height: 100lvh) {
   :root {
     --app-vh: 100lvh;
+  }
+}
+
+@media (min-width: 394px) {
+  :root {
+    --left-gap: 20px;
   }
 }
 
@@ -86,18 +100,24 @@
     --tabbar-tab-idle: #ffffff;
     --tabbar-bevel-brightness: 0.6;
     --tabbar-idle-icon-filter: brightness(0) invert(1);
-    --appbar-overlay-0: rgba(0, 0, 0, 1);
-    --appbar-overlay-1: rgba(0, 0, 0, 0.95);
-    --appbar-overlay-2: rgba(0, 0, 0, 0.82);
-    --appbar-overlay-3: rgba(0, 0, 0, 0.56);
-    --appbar-overlay-4: rgba(0, 0, 0, 0.24);
-    --appbar-overlay-5: rgba(0, 0, 0, 0);
-    --tabbar-bottom-overlay-0: rgba(0, 0, 0, 1);
-    --tabbar-bottom-overlay-1: rgba(0, 0, 0, 0.95);
-    --tabbar-bottom-overlay-2: rgba(0, 0, 0, 0.82);
-    --tabbar-bottom-overlay-3: rgba(0, 0, 0, 0.56);
-    --tabbar-bottom-overlay-4: rgba(0, 0, 0, 0.24);
-    --tabbar-bottom-overlay-5: rgba(0, 0, 0, 0);
+    --appbar-overlay-gradient: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.95) 14%,
+      rgba(0, 0, 0, 0.82) 32%,
+      rgba(0, 0, 0, 0.56) 52%,
+      rgba(0, 0, 0, 0.24) 70%,
+      rgba(0, 0, 0, 0) 84%
+    );
+    --tabbar-bottom-overlay-gradient: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 1) 0%,
+      rgba(0, 0, 0, 0.95) 14%,
+      rgba(0, 0, 0, 0.82) 32%,
+      rgba(0, 0, 0, 0.56) 52%,
+      rgba(0, 0, 0, 0.24) 70%,
+      rgba(0, 0, 0, 0) 84%
+    );
   }
 }
 
@@ -174,15 +194,7 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: 1;
-  background: linear-gradient(
-    to bottom,
-    var(--appbar-overlay-0) 0%,
-    var(--appbar-overlay-1) 14%,
-    var(--appbar-overlay-2) 32%,
-    var(--appbar-overlay-3) 52%,
-    var(--appbar-overlay-4) 70%,
-    var(--appbar-overlay-5) 84%
-  );
+  background: var(--appbar-overlay-gradient);
   opacity: 0;
   transition: opacity 75ms linear;
 }
@@ -238,7 +250,7 @@ body {
 
 .appbar-btn {
   position: absolute;
-  top: calc(env(safe-area-inset-top) + (var(--appbar-height) / 2));
+  top: calc(env(safe-area-inset-top) + var(--appbar-top-pad) + (var(--close-size) / 2));
   transform: translateY(-50%);
   width: var(--close-size);
   height: var(--close-size);
@@ -331,7 +343,7 @@ body.appbar-dark-forced {
 .title {
   position: absolute;
   left: 50%;
-  top: calc(env(safe-area-inset-top) + (var(--appbar-height) / 2));
+  top: calc(env(safe-area-inset-top) + var(--appbar-top-pad) + (var(--close-size) / 2));
   transform: translate(-50%, calc(-50% + 12px));
   margin: 0;
   font-size: var(--title-size);
@@ -419,12 +431,6 @@ body.scrolled .content-title {
   flex: 0 0 40px;
 }
 
-.card-leading svg {
-  width: 24px;
-  height: 24px;
-  display: block;
-}
-
 .card-leading img {
   width: 24px;
   height: 24px;
@@ -502,6 +508,18 @@ body.scrolled .content-title {
   position: relative;
   z-index: 1;
   overflow: hidden;
+  transition:
+    transform 300ms var(--expressive-entrance),
+    background-color 75ms ease,
+    box-shadow 75ms ease,
+    backdrop-filter 75ms ease,
+    -webkit-backdrop-filter 75ms ease;
+}
+
+.tabbar:has(.tabbar-tab:active) {
+  transform: scale(1.05);
+  backdrop-filter: blur(4px) saturate(6) brightness(1.18);
+  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1.18);
 }
 
 .tabbar-input {
@@ -518,6 +536,7 @@ body.scrolled .content-title {
   box-shadow: inset 0 0 12px var(--tabbar-glow);
   filter: brightness(1.05);
   pointer-events: none;
+  transition: filter 75ms ease;
 }
 
 .tabbar::after {
@@ -533,6 +552,11 @@ body.scrolled .content-title {
   mask-composite: exclude;
   filter: brightness(var(--tabbar-bevel-brightness));
   pointer-events: none;
+  transition: filter 75ms ease;
+}
+
+.tabbar:has(.tabbar-tab:active)::before {
+  filter: brightness(1.14);
 }
 
 .tabbar-wrap::before {
@@ -544,15 +568,7 @@ body.scrolled .content-title {
   height: calc(96px + env(safe-area-inset-bottom));
   pointer-events: none;
   z-index: 0;
-  background: linear-gradient(
-    to top,
-    var(--tabbar-bottom-overlay-0) 0%,
-    var(--tabbar-bottom-overlay-1) 14%,
-    var(--tabbar-bottom-overlay-2) 32%,
-    var(--tabbar-bottom-overlay-3) 52%,
-    var(--tabbar-bottom-overlay-4) 70%,
-    var(--tabbar-bottom-overlay-5) 84%
-  );
+  background: var(--tabbar-bottom-overlay-gradient);
 }
 
 .tabbar-tab {
