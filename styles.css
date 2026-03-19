@@ -970,6 +970,21 @@ body.theme-animating .hero-title {
   transition: none !important;
 }
 
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar,
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn {
+  animation: appbar-enter-fade 100ms ease var(--appbar-enter-delay) both;
+}
+
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar-icon-toned {
+  will-change: filter;
+  animation: appbar-icon-deblur 200ms ease var(--appbar-enter-delay) both;
+}
+
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar-icon-back {
+  will-change: filter;
+  animation: appbar-icon-back-deblur 200ms ease var(--appbar-enter-delay) both;
+}
+
 @keyframes vt-old-push {
   from {
     transform: translateX(0);
@@ -1015,5 +1030,34 @@ body.theme-animating .hero-title {
   to {
     transform: translateX(0);
     opacity: 1;
+  }
+}
+
+@keyframes appbar-enter-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes appbar-icon-deblur {
+  from {
+    filter: blur(16px);
+    -webkit-filter: blur(16px);
+  }
+  to {
+    filter: blur(0);
+    -webkit-filter: blur(0);
+  }
+}
+
+@keyframes appbar-icon-back-deblur {
+  from {
+    filter: var(--appbar-icon-tone-filter) blur(16px);
+  }
+  to {
+    filter: var(--appbar-icon-tone-filter) blur(0);
   }
 }
