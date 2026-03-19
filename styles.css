@@ -970,6 +970,13 @@ body.theme-animating .hero-title {
   transition: none !important;
 }
 
+html[data-nav-direction="push"]:active-view-transition .appbar,
+html[data-nav-direction="push"]:active-view-transition .appbar-btn,
+html[data-nav-direction="push"]:active-view-transition .title {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar,
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn {
   animation: appbar-enter-fade 100ms ease var(--appbar-enter-delay) both;
