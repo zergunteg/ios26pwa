@@ -50,6 +50,12 @@
   --appbar-overlay-3: rgba(255, 255, 255, 0.56);
   --appbar-overlay-4: rgba(255, 255, 255, 0.24);
   --appbar-overlay-5: rgba(255, 255, 255, 0);
+  --tabbar-bottom-overlay-0: rgba(255, 255, 255, 1);
+  --tabbar-bottom-overlay-1: rgba(255, 255, 255, 0.95);
+  --tabbar-bottom-overlay-2: rgba(255, 255, 255, 0.82);
+  --tabbar-bottom-overlay-3: rgba(255, 255, 255, 0.56);
+  --tabbar-bottom-overlay-4: rgba(255, 255, 255, 0.24);
+  --tabbar-bottom-overlay-5: rgba(255, 255, 255, 0);
   --hero-header-bg: #333333;
   --appbar-height: 70px;
   --close-size: 44px;
@@ -86,6 +92,12 @@
     --appbar-overlay-3: rgba(0, 0, 0, 0.56);
     --appbar-overlay-4: rgba(0, 0, 0, 0.24);
     --appbar-overlay-5: rgba(0, 0, 0, 0);
+    --tabbar-bottom-overlay-0: rgba(0, 0, 0, 1);
+    --tabbar-bottom-overlay-1: rgba(0, 0, 0, 0.95);
+    --tabbar-bottom-overlay-2: rgba(0, 0, 0, 0.82);
+    --tabbar-bottom-overlay-3: rgba(0, 0, 0, 0.56);
+    --tabbar-bottom-overlay-4: rgba(0, 0, 0, 0.24);
+    --tabbar-bottom-overlay-5: rgba(0, 0, 0, 0);
   }
 }
 
@@ -464,6 +476,7 @@ body.scrolled .content-title {
   z-index: 9000;
   display: flex;
   justify-content: center;
+  isolation: isolate;
 }
 
 .tabbar {
@@ -487,6 +500,7 @@ body.scrolled .content-title {
   align-items: center;
   gap: 0;
   position: relative;
+  z-index: 1;
   overflow: hidden;
 }
 
@@ -519,6 +533,26 @@ body.scrolled .content-title {
   mask-composite: exclude;
   filter: brightness(var(--tabbar-bevel-brightness));
   pointer-events: none;
+}
+
+.tabbar-wrap::before {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(96px + env(safe-area-inset-bottom));
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    to top,
+    var(--tabbar-bottom-overlay-0) 0%,
+    var(--tabbar-bottom-overlay-1) 14%,
+    var(--tabbar-bottom-overlay-2) 32%,
+    var(--tabbar-bottom-overlay-3) 52%,
+    var(--tabbar-bottom-overlay-4) 70%,
+    var(--tabbar-bottom-overlay-5) 84%
+  );
 }
 
 .tabbar-tab {
@@ -936,28 +970,6 @@ body.theme-animating .hero-title {
   transition: none !important;
 }
 
-:root:active-view-transition .appbar,
-:root:active-view-transition .appbar-btn,
-:root:active-view-transition .title {
-  opacity: 0 !important;
-  transition: none !important;
-}
-
-html[data-nav-direction="push"]:not(:active-view-transition) .appbar,
-html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn {
-  animation: appbar-enter-fade 100ms ease var(--appbar-enter-delay) both;
-}
-
-html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar-icon-toned {
-  will-change: filter;
-  animation: appbar-icon-deblur 200ms ease var(--appbar-enter-delay) both;
-}
-
-html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar-icon-back {
-  will-change: filter;
-  animation: appbar-icon-back-deblur 200ms ease var(--appbar-enter-delay) both;
-}
-
 @keyframes vt-old-push {
   from {
     transform: translateX(0);
@@ -1003,34 +1015,5 @@ html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar
   to {
     transform: translateX(0);
     opacity: 1;
-  }
-}
-
-@keyframes appbar-enter-fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes appbar-icon-deblur {
-  from {
-    filter: blur(16px);
-    -webkit-filter: blur(16px);
-  }
-  to {
-    filter: blur(0);
-    -webkit-filter: blur(0);
-  }
-}
-
-@keyframes appbar-icon-back-deblur {
-  from {
-    filter: var(--appbar-icon-tone-filter) blur(16px);
-  }
-  to {
-    filter: var(--appbar-icon-tone-filter) blur(0);
   }
 }
