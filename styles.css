@@ -124,7 +124,7 @@
       rgba(255, 255, 255, 0.10) 80%,
       rgba(255, 255, 255, 0.15) 95%
     );
-    --tabbar-tab-active-bg: rgba(255, 255, 255, 0.16);
+    --tabbar-tab-active-bg: rgb(91 91 91 / 70%);
     --tabbar-tab-idle: #ffffff;
     --tabbar-bevel-brightness: 0.6;
     --tabbar-idle-icon-filter: brightness(0) invert(1);
@@ -301,7 +301,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
   transition:
-    transform 300ms var(--expressive-entrance),
+    transform 150ms var(--expressive-entrance),
     background-color 75ms ease,
     color 75ms ease,
     box-shadow 75ms ease,
@@ -526,8 +526,8 @@ body.scrolled .content-title {
   border: none;
   border-radius: 999px;
   background: var(--tabbar-bg);
-  backdrop-filter: blur(4px) saturate(6) brightness(1.1);
-  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1.1);
+  backdrop-filter: blur(4px) saturate(6) brightness(1.05);
+  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1.05);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   display: inline-flex;
   align-items: center;
@@ -536,15 +536,12 @@ body.scrolled .content-title {
   z-index: 1;
   overflow: hidden;
   transition:
-    transform 300ms var(--expressive-entrance),
+    transform 150ms var(--expressive-entrance),
     background-color 75ms ease,
-    box-shadow 75ms ease,
-    backdrop-filter 75ms ease,
-    -webkit-backdrop-filter 75ms ease;
+    box-shadow 75ms ease;
 }
 
 .tabbar:has(.tabbar-tab:active) {
-  transform: scale(1.05);
   backdrop-filter: blur(4px) saturate(6) brightness(1.18);
   -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1.18);
 }
@@ -563,7 +560,6 @@ body.scrolled .content-title {
   box-shadow: inset 0 0 12px var(--tabbar-glow);
   filter: brightness(1.05);
   pointer-events: none;
-  transition: filter 75ms ease;
 }
 
 .tabbar::after {
@@ -577,6 +573,7 @@ body.scrolled .content-title {
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+  filter: brightness(1.05);
   pointer-events: none;
 }
 
@@ -850,6 +847,10 @@ body.scrolled .content-title {
   }
 
   .appbar-btn::after {
+    filter: none;
+  }
+
+  .tabbar::after {
     filter: none;
   }
 
