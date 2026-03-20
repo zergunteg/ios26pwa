@@ -286,9 +286,9 @@ body {
   border-radius: 999px;
   background: var(--button-bg);
   color: var(--button-icon);
-  backdrop-filter: blur(4px) saturate(6) brightness(1);
-  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(4px) saturate(6) brightness(1.05);
+  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1.05);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.09);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -365,7 +365,6 @@ body.appbar-dark-forced {
 
 .appbar-btn:active {
   transform: translateY(-50%) scale(1.25);
-  filter: brightness(3);
 }
 
 .title {
@@ -835,6 +834,19 @@ body.scrolled .content-title {
     backdrop-filter: blur(4px) saturate(4);
     -webkit-backdrop-filter: blur(4px) saturate(2);
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  }
+
+  .appbar-btn:active {
+    background: rgba(108, 108, 108, 0.38);
+  }
+
+  .appbar-btn:active::before {
+    box-shadow: inset 0 0 14px rgba(54, 54, 54, 0.95);
+    filter: brightness(1.08);
+  }
+
+  .appbar-btn:active::after {
+    filter: brightness(1.18);
   }
 
   .appbar-btn::after {
