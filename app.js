@@ -51,7 +51,7 @@ const appbarZones =
     : heroHeader
       ? [heroHeader]
       : [];
-const appbarToneReleaseOffset = page === "color-content" ? 0 : 80;
+const appbarToneReleaseOffset = page === "color-content" ? 0 : 120;
 let themeAnimationTimer = null;
 
 const getHeroHeaderColor = () => {

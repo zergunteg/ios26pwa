@@ -365,6 +365,7 @@ body.appbar-dark-forced {
 
 .appbar-btn:active {
   transform: translateY(-50%) scale(1.25);
+  filter: brightness(3);
 }
 
 .title {
