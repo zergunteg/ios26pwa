@@ -90,9 +90,23 @@
     --card-bg: #1c1c1e;
     --card-border: rgba(255, 255, 255, 0.08);
     --text-primary: #ffffff;
-    --button-bg: rgba(88, 88, 88, 0.31);
+    --button-bg: #3b3b3b4d;
     --button-icon: #ffffff;
-    --button-glow: rgba(31, 31, 31, 0.8);
+    --button-glow: #121212cc;
+    --button-bevel-gradient: linear-gradient(
+      210deg,
+      rgba(255, 255, 255, 0) 5%,
+      rgba(255, 255, 255, 0.13) 20%,
+      rgba(255, 255, 255, 0.85) 40%,
+      rgba(255, 255, 255, 0.95) 45%,
+      rgba(255, 255, 255, 1) 48%,
+      rgba(255, 255, 255, 1) 50%,
+      rgba(255, 255, 255, 1) 52%,
+      rgba(255, 255, 255, 0.95) 55%,
+      rgba(255, 255, 255, 0.85) 60%,
+      rgba(255, 255, 255, 0.13) 80%,
+      rgba(255, 255, 255, 0) 95%
+    );
     --appbar-icon-tone-filter: brightness(0) invert(1);
     --tabbar-bg: rgba(88, 88, 88, 0.31);
     --tabbar-glow: rgba(31, 31, 31, 0.8);
@@ -317,8 +331,8 @@ body {
 
 .appbar-icon {
   display: block;
-  width: 20.4px;
-  height: 20.4px;
+  width: 24px;
+  height: 24px;
   flex: 0 0 auto;
 }
 
@@ -812,11 +826,10 @@ body.scrolled .content-title {
 
   .appbar-btn::before {
     box-shadow: inset 0 0 12px rgba(31, 31, 31, 0.8);
-    filter: brightness(1.1);
   }
 
   .appbar-btn::after {
-    filter: brightness(0.6);
+    filter: brightness(0.2);
   }
 
   .card {
@@ -1003,11 +1016,6 @@ html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar
   animation: appbar-icon-deblur 200ms ease var(--appbar-enter-delay) both;
 }
 
-html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar-icon-back {
-  will-change: filter;
-  animation: appbar-icon-back-deblur 200ms ease var(--appbar-enter-delay) both;
-}
-
 @keyframes vt-old-push {
   from {
     transform: translateX(0);
@@ -1067,20 +1075,11 @@ html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn .appbar
 
 @keyframes appbar-icon-deblur {
   from {
-    filter: blur(16px);
-    -webkit-filter: blur(16px);
-  }
-  to {
-    filter: blur(0);
-    -webkit-filter: blur(0);
-  }
-}
-
-@keyframes appbar-icon-back-deblur {
-  from {
     filter: var(--appbar-icon-tone-filter) blur(16px);
+    -webkit-filter: var(--appbar-icon-tone-filter) blur(16px);
   }
   to {
     filter: var(--appbar-icon-tone-filter) blur(0);
+    -webkit-filter: var(--appbar-icon-tone-filter) blur(0);
   }
 }

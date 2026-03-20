@@ -1,6 +1,12 @@
 const page = document.body.dataset.page || "home";
 const header = document.querySelector(".appbar");
-const isStandalone = window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
+const isEmbeddedWebView =
+  window.__IOS_WEBVIEW__ === true ||
+  document.documentElement.hasAttribute("data-webview");
+const isStandalone =
+  window.matchMedia("(display-mode: standalone)").matches ||
+  window.navigator.standalone === true ||
+  isEmbeddedWebView;
 document.documentElement.classList.toggle("page-color-header", page === "color-header");
 
 const setNavDirection = (direction) => {
