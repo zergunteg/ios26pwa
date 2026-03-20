@@ -94,22 +94,36 @@
     --button-icon: #ffffff;
     --button-glow: #121212cc;
     --button-bevel-gradient: linear-gradient(
-      210deg,
-      rgba(255, 255, 255, 0) 5%,
-      rgba(255, 255, 255, 0.13) 20%,
-      rgba(255, 255, 255, 0.85) 40%,
-      rgba(255, 255, 255, 0.95) 45%,
-      rgba(255, 255, 255, 1) 48%,
-      rgba(255, 255, 255, 1) 50%,
-      rgba(255, 255, 255, 1) 52%,
-      rgba(255, 255, 255, 0.95) 55%,
-      rgba(255, 255, 255, 0.85) 60%,
-      rgba(255, 255, 255, 0.13) 80%,
-      rgba(255, 255, 255, 0) 95%
+      315deg,
+      rgba(255, 255, 255, 0.15) 5%,
+      rgba(255, 255, 255, 0.10) 20%,
+      rgba(255, 255, 255, 0.04) 40%,
+      rgba(255, 255, 255, 0.03) 45%,
+      rgba(255, 255, 255, 0.00) 48%,
+      rgba(255, 255, 255, 0.00) 50%,
+      rgba(255, 255, 255, 0.00) 52%,
+      rgba(255, 255, 255, 0.03) 55%,
+      rgba(255, 255, 255, 0.04) 60%,
+      rgba(255, 255, 255, 0.10) 80%,
+      rgba(255, 255, 255, 0.15) 95%
     );
     --appbar-icon-tone-filter: brightness(0) invert(1);
     --tabbar-bg: rgba(88, 88, 88, 0.31);
     --tabbar-glow: rgba(31, 31, 31, 0.8);
+    --tabbar-bevel-gradient: linear-gradient(
+      -6deg,
+      rgba(255, 255, 255, 0.15) 5%,
+      rgba(255, 255, 255, 0.10) 20%,
+      rgba(255, 255, 255, 0.04) 40%,
+      rgba(255, 255, 255, 0.03) 45%,
+      rgba(255, 255, 255, 0.00) 48%,
+      rgba(255, 255, 255, 0.00) 50%,
+      rgba(255, 255, 255, 0.00) 52%,
+      rgba(255, 255, 255, 0.03) 55%,
+      rgba(255, 255, 255, 0.04) 60%,
+      rgba(255, 255, 255, 0.10) 80%,
+      rgba(255, 255, 255, 0.15) 95%
+    );
     --tabbar-tab-active-bg: rgba(255, 255, 255, 0.16);
     --tabbar-tab-idle: #ffffff;
     --tabbar-bevel-brightness: 0.6;
@@ -325,7 +339,6 @@ body {
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  filter: brightness(1.1);
   pointer-events: none;
 }
 
@@ -564,9 +577,7 @@ body.scrolled .content-title {
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  filter: brightness(var(--tabbar-bevel-brightness));
   pointer-events: none;
-  transition: filter 75ms ease;
 }
 
 .tabbar:has(.tabbar-tab:active)::before {
@@ -826,10 +837,6 @@ body.scrolled .content-title {
 
   .appbar-btn::before {
     box-shadow: inset 0 0 12px rgba(31, 31, 31, 0.8);
-  }
-
-  .appbar-btn::after {
-    filter: brightness(0.2);
   }
 
   .card {
