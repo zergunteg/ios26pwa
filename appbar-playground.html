@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="iOS26 AppBar" />
+    <script>
+      (() => {
+        try {
+          const nav = performance.getEntriesByType("navigation")[0];
+          let direction = sessionStorage.getItem("nav-direction") || "";
+          if (!direction && nav && nav.type === "back_forward") direction = "pop";
+          if (!direction && nav && nav.type === "navigate") direction = "push";
+          if (!direction) direction = "none";
+          document.documentElement.setAttribute("data-nav-direction", direction);
+          sessionStorage.removeItem("nav-direction");
+        } catch {
+          document.documentElement.setAttribute("data-nav-direction", "none");
+        }
+      })();
+    </script>
+    <title>Настройка аппбара</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="appbar-playground">
+    <div class="app-shell">
+      <header class="appbar appbar-adaptive-demo" data-adaptive-appbar>
+        <div class="appbar-side appbar-side-leading" data-appbar-leading>
+          <button class="appbar-btn" data-back-to-home aria-label="Назад">
+            <img class="appbar-icon appbar-icon-back appbar-icon-toned" src="icons/chevron-left.svg" alt="" aria-hidden="true" />
+          </button>
+        </div>
+
+        <div class="appbar-title-wrap" data-appbar-center>
+          <div class="appbar-title-stack" data-appbar-stack>
+            <h1 class="appbar-title-main" data-appbar-title-text>Длинный текст который должен поместиться</h1>
+            <p class="appbar-title-subtitle" data-appbar-subtitle-text hidden></p>
+          </div>
+        </div>
+
+        <div class="appbar-side appbar-side-trailing" data-appbar-trailing>
+          <button class="appbar-btn" type="button" aria-label="Настройки" data-right-single>
+            <img class="appbar-icon appbar-icon-toned" src="icons/gearshape.svg" alt="" aria-hidden="true" />
+          </button>
+          <div class="appbar-pill" data-right-double hidden>
+            <button class="appbar-pill-btn" type="button" aria-label="Уведомления">
+              <img class="appbar-icon appbar-icon-toned" src="icons/bell.svg" alt="" aria-hidden="true" />
+            </button>
+            <button class="appbar-pill-btn" type="button" aria-label="Еще">
+              <img class="appbar-icon appbar-icon-toned" src="icons/more.svg" alt="" aria-hidden="true" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main class="screen appbar-playground-screen">
+        <section class="card control-card">
+          <h2 class="control-card-title">Контролы аппбара</h2>
+          <div class="control-list">
+            <label class="control-field">
+              <span class="control-label">Заголовок</span>
+              <input
+                class="control-input"
+                type="text"
+                value="Длинный текст который должен поместиться"
+                placeholder="Введите заголовок"
+                data-control="title"
+              />
+            </label>
+
+            <label class="control-field">
+              <span class="control-label">Подзаголовок</span>
+              <input
+                class="control-input"
+                type="text"
+                value=""
+                placeholder="Введите подзаголовок"
+                data-control="subtitle"
+              />
+            </label>
+
+            <label class="control-toggle">
+              <span class="control-label">Показать правую часть</span>
+              <span class="switch">
+                <input class="switch-input" type="checkbox" checked data-control="show-right" />
+                <span class="switch-ui" aria-hidden="true"></span>
+              </span>
+            </label>
+
+            <label class="control-toggle">
+              <span class="control-label">Показать двойную кнопку</span>
+              <span class="switch">
+                <input class="switch-input" type="checkbox" data-control="show-double" />
+                <span class="switch-ui" aria-hidden="true"></span>
+              </span>
+            </label>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="appbar-playground.js"></script>
+  </body>
+</html>

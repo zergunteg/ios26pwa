@@ -115,7 +115,7 @@ const syncAppbarTone = () => {
 const syncThemeColor = () => {
   if (!themeColorMeta) return;
   const forceDarkOnHero = syncAppbarTone();
-  const nextColor = darkSchemeQuery.matches ? "#000000" : forceDarkOnHero ? getHeroHeaderColor() : "#ffffff";
+  const nextColor = forceDarkOnHero ? getHeroHeaderColor() : darkSchemeQuery.matches ? "#000000" : "#ffffff";
 
   // Keep UA color-scheme and toolbar color aligned.
   document.documentElement.style.colorScheme = darkSchemeQuery.matches ? "dark" : "light";
