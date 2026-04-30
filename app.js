@@ -225,6 +225,9 @@ if (searchBars.length) {
       bar.classList.toggle("is-active", isActive);
       syncSearchChrome();
       syncPromotedSticky();
+      if (!isActive && behavior !== "inline") {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
     };
 
     const syncInputValueState = () => {
@@ -271,9 +274,6 @@ if (searchBars.length) {
         syncInputValueState();
         input.blur();
         setActive(false);
-        if (behavior !== "inline") {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
       });
     }
 
