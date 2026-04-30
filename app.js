@@ -29,7 +29,7 @@ const syncSearchActiveSafeTop = () => {
   const activeSearch = document.querySelector("[data-search-bar].is-active");
   if (activeSearch) return;
   const safeAreaInsetTop = readSafeAreaInsetTop();
-  const resolvedTop = Math.max(safeAreaInsetTop, isStandalone ? 0 : 16);
+  const resolvedTop = safeAreaInsetTop + (isStandalone ? 0 : 16);
   document.documentElement.style.setProperty("--search-active-safe-top", `${resolvedTop}px`);
 };
 

@@ -1069,7 +1069,8 @@ body[data-page="search-floating"] .content-title {
   font-weight: 700;
   color: var(--text-primary);
   opacity: 1;
-  transition: opacity 150ms linear;
+  transform: translateY(0);
+  transition: opacity 250ms ease, transform 250ms ease;
 }
 
 body.scrolled .content-title {
@@ -1082,6 +1083,12 @@ body.scrolled .content-title {
 }
 
 body.search-chrome-collapsed .cards {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+}
+
+body.search-chrome-collapsed .content-title {
   opacity: 0;
   pointer-events: none;
   transform: translateY(-10px);
