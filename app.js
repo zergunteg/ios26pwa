@@ -209,15 +209,15 @@ if (searchBars.length) {
       });
     };
 
-    let stickyThreshold = 0;
     const getStickyTop = () => Number.parseFloat(getComputedStyle(bar).top) || 0;
     const syncPromotedSticky = () => {
       if (behavior !== "inline-floating") return;
-      bar.classList.toggle("is-stuck", !bar.classList.contains("is-active") && window.scrollY >= stickyThreshold);
+      const stuck = !bar.classList.contains("is-active") &&
+        bar.getBoundingClientRect().top <= getStickyTop() + 1;
+      bar.classList.toggle("is-stuck", stuck);
     };
     const measurePromotedSticky = () => {
       if (behavior !== "inline-floating") return;
-      stickyThreshold = Math.max(0, Math.round(bar.offsetTop - getStickyTop()));
       syncPromotedSticky();
     };
 
