@@ -696,7 +696,7 @@ body.scrolled .title {
 }
 
 .search-bar--fixed.is-active {
-  top: calc(var(--statusbar-liquid-offset) + env(safe-area-inset-top));
+  top: calc(var(--statusbar-liquid-offset) + max(env(safe-area-inset-top), 16px));
   padding-top: var(--appbar-top-pad);
   z-index: 10001;
 }
