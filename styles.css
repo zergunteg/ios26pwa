@@ -454,7 +454,9 @@ body.scrolled .title {
   transition:
     top 300ms cubic-bezier(0.4, 0.1, 0.2, 1),
     padding-top 300ms cubic-bezier(0.4, 0.1, 0.2, 1),
-    background-color 150ms ease;
+    background-color 150ms ease,
+    opacity 250ms ease,
+    transform 250ms ease;
 }
 
 .search-input-shell {
@@ -629,29 +631,24 @@ body.scrolled .title {
   max-width: 0;
   transform: translateX(calc(var(--search-cancel-width) + var(--search-cancel-gap) + 16px));
   flex: 0 0 0;
-  opacity: 0;
+  opacity: 1;
   pointer-events: none;
   transition:
-    transform 300ms var(--expressive-entrance),
-    flex-basis 300ms var(--expressive-entrance),
-    max-width 300ms var(--expressive-entrance),
-    margin-left 300ms var(--expressive-entrance),
-    opacity 300ms ease,
-    background-color 75ms ease,
-    box-shadow 75ms ease,
-    backdrop-filter 75ms ease,
-    -webkit-backdrop-filter 75ms ease;
+    transform 500ms var(--expressive-entrance),
+    flex-basis 500ms var(--expressive-entrance),
+    max-width 500ms var(--expressive-entrance),
+    margin-left 500ms var(--expressive-entrance);
 }
 
 .search-clear-btn:active {
   transform: scale(1.25);
 }
 
-.search-bar.is-active:not(.search-bar--no-clear) .search-clear-btn {
+.search-bar.is-active:not(.search-bar--no-clear) .search-clear-btn,
+.search-active-overlay.is-controls-active:not(.search-bar--no-clear) .search-clear-btn {
   flex-basis: var(--search-cancel-width);
   max-width: var(--search-cancel-width);
   margin-left: var(--search-cancel-gap);
-  opacity: 1;
   pointer-events: auto;
   transform: translateX(0);
 }
@@ -668,10 +665,6 @@ body.scrolled .title {
   position: sticky;
   top: calc(var(--statusbar-liquid-offset) + env(safe-area-inset-top) + var(--appbar-height));
   z-index: 10000;
-}
-
-.search-bar--promotes.is-stuck:not(.is-active) {
-  padding-top: 0;
 }
 
 .search-bar--promotes.is-active {
@@ -734,8 +727,18 @@ body.search-chrome-collapsed {
 }
 
 body.search-chrome-collapsed .search-bar:not(.search-active-overlay) {
+  animation: none;
   opacity: 0;
   pointer-events: none;
+  transform: translateY(-10px);
+}
+
+body.search-overlay-open .search-bar--fixed:not(.search-active-overlay),
+body.search-chrome-collapsed .search-bar--fixed:not(.search-active-overlay) {
+  animation: none !important;
+  opacity: 0 !important;
+  pointer-events: none;
+  transform: translateY(-10px);
 }
 
 body.search-chrome-collapsed .appbar {
@@ -754,9 +757,13 @@ body.search-chrome-collapsed {
   padding-right: 16px;
 }
 
-.screen--search-inline .search-bar:not(.is-active):not(.is-stuck) {
+.screen--search-inline .content-title {
+  margin-bottom: 12px;
+}
+
+.screen--search-inline .search-bar:not(.is-active) {
   margin-top: 0;
-  padding-top: 12px;
+  padding-top: 0;
 }
 
 .screen--search-inline .cards {

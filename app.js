@@ -218,6 +218,7 @@ if (searchBars.length) {
   let searchOverlay = null;
   let searchOverlayInput = null;
   let searchOverlayShell = null;
+  let searchOverlayCloseTimer = null;
 
   const syncSearchChrome = () => {
     const shouldCollapse = Boolean(activeOverlaySource) || searchBars.some((bar) => {
@@ -289,19 +290,31 @@ if (searchBars.length) {
 
     const overlay = createSearchOverlay();
     if (!overlay || !searchOverlayInput) return false;
+    if (searchOverlayCloseTimer) {
+      window.clearTimeout(searchOverlayCloseTimer);
+      searchOverlayCloseTimer = null;
+    }
 
     const sourceInput = sourceBar.querySelector(".search-input");
     const sourceShell = sourceBar.querySelector(".search-input-shell");
     syncSearchActiveSafeTop();
     activeOverlaySource = sourceBar;
+    document.body.classList.add("search-overlay-open");
     searchOverlayInput.value = sourceInput?.value || "";
     syncShellValueState(searchOverlayShell, searchOverlayInput);
     syncShellValueState(sourceShell, sourceInput);
 
     overlay.hidden = false;
     overlay.removeAttribute("aria-hidden");
-    overlay.classList.add("is-active");
+    overlay.classList.remove("is-active", "is-controls-active");
     syncSearchChrome();
+
+    window.requestAnimationFrame(() => {
+      overlay.classList.add("is-active");
+      window.requestAnimationFrame(() => {
+        if (activeOverlaySource === sourceBar) overlay.classList.add("is-controls-active");
+      });
+    });
 
     focusSearchOverlayInput();
     window.requestAnimationFrame(() => {
@@ -323,10 +336,15 @@ if (searchBars.length) {
 
     activeOverlaySource = null;
     searchOverlayInput?.blur();
-    searchOverlay.classList.remove("is-active");
+    searchOverlay.classList.remove("is-active", "is-controls-active");
     searchOverlay.setAttribute("aria-hidden", "true");
-    window.setTimeout(() => {
-      if (!activeOverlaySource && searchOverlay) searchOverlay.hidden = true;
+    if (searchOverlayCloseTimer) window.clearTimeout(searchOverlayCloseTimer);
+    searchOverlayCloseTimer = window.setTimeout(() => {
+      if (!activeOverlaySource && searchOverlay) {
+        searchOverlay.hidden = true;
+        document.body.classList.remove("search-overlay-open");
+      }
+      searchOverlayCloseTimer = null;
     }, 180);
     syncSearchChrome();
     syncSearchActiveSafeTop();
