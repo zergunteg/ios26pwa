@@ -222,9 +222,6 @@ if (searchBars.length) {
     };
 
     const setActive = (isActive) => {
-      if (isActive && behavior !== "inline" && window.scrollY === 0) {
-        window.scrollTo({ top: 1, behavior: "instant" });
-      }
       bar.classList.toggle("is-active", isActive);
       syncSearchChrome();
       syncPromotedSticky();
@@ -249,7 +246,12 @@ if (searchBars.length) {
       inputShell.addEventListener("pointerleave", releasePressedState);
     }
 
-    input.addEventListener("focus", () => setActive(true));
+    input.addEventListener("focus", () => {
+      if (behavior !== "inline" && window.scrollY === 0) {
+        window.scrollTo({ top: 1, behavior: "instant" });
+      }
+      setActive(true);
+    });
     input.addEventListener("input", syncInputValueState);
     input.addEventListener("blur", () => {
       window.setTimeout(() => {
