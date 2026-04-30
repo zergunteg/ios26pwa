@@ -674,7 +674,7 @@ body.scrolled .title {
 
 .search-bar--promotes.is-active {
   position: fixed;
-  top: var(--statusbar-liquid-offset);
+  top: calc(var(--statusbar-liquid-offset) + var(--vv-offset, 0px));
   left: 0;
   width: 100%;
   margin: 0;
@@ -695,9 +695,13 @@ body.scrolled .title {
 }
 
 .search-bar--fixed.is-active {
-  top: var(--statusbar-liquid-offset);
+  top: calc(var(--statusbar-liquid-offset) + var(--vv-offset, 0px));
   padding-top: max(env(safe-area-inset-top), var(--appbar-top-pad), 16px);
   z-index: 10001;
+}
+
+body.search-chrome-collapsed {
+  overscroll-behavior-y: none;
 }
 
 body.search-chrome-collapsed .appbar {

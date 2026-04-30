@@ -222,10 +222,14 @@ if (searchBars.length) {
     };
 
     const setActive = (isActive) => {
+      if (!isActive) bar.style.removeProperty("--vv-offset");
       bar.classList.toggle("is-active", isActive);
       syncSearchChrome();
       syncPromotedSticky();
-      if (isActive) scrollSearchResultsIntoPlace();
+      if (isActive) {
+        if (behavior !== "inline") window.scrollTo({ top: 0, behavior: "instant" });
+        scrollSearchResultsIntoPlace();
+      }
     };
 
     const syncInputValueState = () => {
@@ -286,6 +290,17 @@ if (searchBars.length) {
       window.addEventListener("resize", measurePromotedSticky);
       window.addEventListener("orientationchange", measurePromotedSticky);
       window.addEventListener("pageshow", measurePromotedSticky);
+    }
+
+    if (behavior !== "inline" && window.visualViewport) {
+      const vv = window.visualViewport;
+      const syncBarToVV = () => {
+        if (bar.classList.contains("is-active")) {
+          bar.style.setProperty("--vv-offset", `${Math.round(vv.offsetTop)}px`);
+        }
+      };
+      vv.addEventListener("scroll", syncBarToVV, { passive: true });
+      vv.addEventListener("resize", syncBarToVV, { passive: true });
     }
   });
 }
