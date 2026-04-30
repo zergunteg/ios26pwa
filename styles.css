@@ -26,7 +26,7 @@
   --tabbar-bg: rgba(255, 255, 255, 0.7);
   --tabbar-glow: rgba(255, 255, 255, 1);
   --tabbar-bevel-gradient: linear-gradient(
-    227deg,
+    2deg,
     rgba(255, 255, 255, 0) 6%,
     rgba(255, 255, 255, 0.35) 21%,
     rgba(255, 255, 255, 0.85) 40%,
@@ -489,8 +489,8 @@ body.scrolled .title {
 .search-bar--promotes.is-active .search-input-shell,
 .search-bar--promotes.is-stuck .search-input-shell {
   background: var(--tabbar-bg);
-  backdrop-filter: blur(4px) saturate(6) brightness(1.05);
-  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1.05);
+  backdrop-filter: blur(4px) saturate(6) brightness(1);
+  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
@@ -511,7 +511,7 @@ body.scrolled .title {
 .search-bar--promotes.is-active .search-input-shell::before,
 .search-bar--promotes.is-stuck .search-input-shell::before {
   box-shadow: inset 0 0 12px var(--tabbar-glow);
-  filter: brightness(1.05);
+  filter: brightness(1.02);
 }
 
 .search-input-shell--floating::after,
@@ -1294,8 +1294,8 @@ body.scrolled .content-title {
   border: none;
   border-radius: 999px;
   background: var(--tabbar-bg);
-  backdrop-filter: blur(4px) saturate(6) brightness(1.05);
-  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1.05);
+  backdrop-filter: blur(4px) saturate(6) brightness(1);
+  -webkit-backdrop-filter: blur(4px) saturate(6) brightness(1);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   display: inline-flex;
   align-items: center;
@@ -1321,7 +1321,7 @@ body.scrolled .content-title {
   inset: 0;
   border-radius: inherit;
   box-shadow: inset 0 0 12px var(--tabbar-glow);
-  filter: brightness(1.05);
+  filter: brightness(1.02);
   pointer-events: none;
 }
 
