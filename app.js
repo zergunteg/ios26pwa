@@ -222,12 +222,12 @@ if (searchBars.length) {
     };
 
     const setActive = (isActive) => {
-      if (isActive && behavior !== "inline" && window.scrollY === 0) {
-        window.scrollTo({ top: 1, behavior: "instant" });
-      }
       bar.classList.toggle("is-active", isActive);
       syncSearchChrome();
       syncPromotedSticky();
+      if (!isActive && behavior !== "inline") {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
     };
 
     const syncInputValueState = () => {
@@ -274,9 +274,6 @@ if (searchBars.length) {
         syncInputValueState();
         input.blur();
         setActive(false);
-        if (behavior !== "inline") {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
       });
     }
 
