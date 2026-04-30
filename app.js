@@ -239,6 +239,7 @@ if (searchBars.length) {
 
       inputShell.addEventListener("pointerdown", (event) => {
         if (event.target.closest(".search-field-clear")) return;
+        setActive(true);
         inputShell.classList.add("is-pressed");
       });
       inputShell.addEventListener("pointerup", releasePressedState);

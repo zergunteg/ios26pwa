@@ -468,6 +468,8 @@ body.scrolled .title {
   flex: 1 1 auto;
   position: relative;
   overflow: hidden;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
   transition:
     background-color 180ms ease,
     box-shadow 180ms ease,
@@ -549,6 +551,18 @@ body.scrolled .title {
   padding: 0;
   position: relative;
   z-index: 1;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.search-input-shell:focus,
+.search-input-shell:focus-within,
+.search-input:focus,
+.search-input:focus-visible,
+.search-field-clear:focus,
+.search-field-clear:focus-visible {
+  outline: none;
 }
 
 .search-input::-webkit-search-decoration,
@@ -664,7 +678,7 @@ body.scrolled .title {
   left: 0;
   width: 100%;
   margin: 0;
-  padding-top: calc(env(safe-area-inset-top) + var(--appbar-top-pad));
+  padding-top: max(env(safe-area-inset-top), var(--appbar-top-pad), 16px);
   z-index: 10001;
   background: var(--appbar-overlay-gradient);
 }
@@ -682,7 +696,7 @@ body.scrolled .title {
 
 .search-bar--fixed.is-active {
   top: var(--statusbar-liquid-offset);
-  padding-top: calc(env(safe-area-inset-top) + var(--appbar-top-pad));
+  padding-top: max(env(safe-area-inset-top), var(--appbar-top-pad), 16px);
   z-index: 10001;
 }
 
@@ -708,7 +722,17 @@ body.search-chrome-collapsed .appbar {
 }
 
 .screen--search-floating {
-  padding-top: calc(var(--appbar-height) + env(safe-area-inset-top) + 96px);
+  padding-top: calc(var(--appbar-height) + env(safe-area-inset-top) + 52px);
+}
+
+body[data-page="search-floating"] .title {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  filter: blur(0);
+}
+
+body[data-page="search-floating"] .content-title {
+  display: none;
 }
 
 .appbar-adaptive-demo {
@@ -1786,13 +1810,15 @@ body.theme-animating .hero-title {
 
 html[data-nav-direction="push"]:active-view-transition .appbar,
 html[data-nav-direction="push"]:active-view-transition .appbar-btn,
-html[data-nav-direction="push"]:active-view-transition .title {
+html[data-nav-direction="push"]:active-view-transition .title,
+html[data-nav-direction="push"]:active-view-transition .search-bar--fixed {
   opacity: 0 !important;
   transition: none !important;
 }
 
 html[data-nav-direction="push"]:not(:active-view-transition) .appbar,
-html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn {
+html[data-nav-direction="push"]:not(:active-view-transition) .appbar-btn,
+html[data-nav-direction="push"]:not(:active-view-transition) .search-bar--fixed {
   animation: appbar-enter-fade 100ms ease var(--appbar-enter-delay) both;
 }
 
