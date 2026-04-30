@@ -243,6 +243,7 @@ if (searchBars.length) {
         if (event.target.closest(".search-field-clear")) return;
         setActive(true);
         inputShell.classList.add("is-pressed");
+        input.focus();
       });
       inputShell.addEventListener("pointerup", releasePressedState);
       inputShell.addEventListener("pointercancel", releasePressedState);
@@ -273,7 +274,7 @@ if (searchBars.length) {
         syncInputValueState();
         input.blur();
         setActive(false);
-        if (behavior === "inline-floating") {
+        if (behavior !== "inline") {
           window.scrollTo({ top: 0, behavior: "smooth" });
         }
       });
