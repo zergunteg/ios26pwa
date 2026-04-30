@@ -9,6 +9,22 @@ const isStandalone =
   isEmbeddedWebView;
 document.documentElement.classList.toggle("page-color-header", page === "color-header");
 
+const detectNativeSwitch = () => {
+  const testSwitch = document.createElement("input");
+  testSwitch.type = "checkbox";
+  testSwitch.setAttribute("switch", "");
+  testSwitch.style.cssText =
+    "position:absolute;left:-9999px;top:-9999px;margin:0;visibility:hidden;";
+  document.body.appendChild(testSwitch);
+  const rect = testSwitch.getBoundingClientRect();
+  testSwitch.remove();
+  return rect.width >= 30 && rect.height >= 20;
+};
+
+if (page === "switches") {
+  document.documentElement.classList.toggle("supports-native-switch", detectNativeSwitch());
+}
+
 const setNavDirection = (direction) => {
   try {
     sessionStorage.setItem("nav-direction", direction);
@@ -161,6 +177,116 @@ const cardTemplate = document.querySelector("#card-template");
 if (cards && cardTemplate) {
   const cardMarkup = cardTemplate ? cardTemplate.innerHTML.trim() : "";
   cards.innerHTML = Array.from({ length: 20 }, () => cardMarkup).join("");
+}
+
+const searchBars = Array.from(document.querySelectorAll("[data-search-bar]"));
+if (searchBars.length) {
+  const syncSearchChrome = () => {
+    const shouldCollapse = searchBars.some((bar) => {
+      const behavior = bar.dataset.searchBehavior || "inline";
+      return bar.classList.contains("is-active") && behavior !== "inline";
+    });
+    document.body.classList.toggle("search-chrome-collapsed", shouldCollapse);
+  };
+
+  searchBars.forEach((bar) => {
+    const input = bar.querySelector(".search-input");
+    const clearButton = bar.querySelector(".search-clear-btn");
+    const inputShell = bar.querySelector(".search-input-shell");
+    const fieldClearButton = bar.querySelector(".search-field-clear");
+    if (!input) return;
+    const behavior = bar.dataset.searchBehavior || "inline";
+
+    const scrollSearchResultsIntoPlace = () => {
+      if (behavior === "inline" || !cards) return;
+      window.requestAnimationFrame(() => {
+        const rootStyle = getComputedStyle(document.documentElement);
+        const barTop = Number.parseFloat(rootStyle.getPropertyValue("--statusbar-liquid-offset")) || 0;
+        const barBottom = barTop + bar.offsetHeight;
+        const cardsTop = cards.getBoundingClientRect().top + window.scrollY;
+        const targetTop = Math.max(0, Math.round(cardsTop - barBottom - 20));
+        window.scrollTo({ top: targetTop, behavior: "smooth" });
+      });
+    };
+
+    let stickyThreshold = 0;
+    const getStickyTop = () => Number.parseFloat(getComputedStyle(bar).top) || 0;
+    const syncPromotedSticky = () => {
+      if (behavior !== "inline-floating") return;
+      bar.classList.toggle("is-stuck", !bar.classList.contains("is-active") && window.scrollY >= stickyThreshold);
+    };
+    const measurePromotedSticky = () => {
+      if (behavior !== "inline-floating") return;
+      stickyThreshold = Math.max(0, Math.round(bar.offsetTop - getStickyTop()));
+      syncPromotedSticky();
+    };
+
+    const setActive = (isActive) => {
+      bar.classList.toggle("is-active", isActive);
+      syncSearchChrome();
+      syncPromotedSticky();
+      if (isActive) scrollSearchResultsIntoPlace();
+    };
+
+    const syncInputValueState = () => {
+      inputShell?.classList.toggle("has-value", input.value.length > 0);
+    };
+
+    if (inputShell) {
+      const releasePressedState = () => {
+        inputShell.classList.remove("is-pressed");
+      };
+
+      inputShell.addEventListener("pointerdown", (event) => {
+        if (event.target.closest(".search-field-clear")) return;
+        inputShell.classList.add("is-pressed");
+      });
+      inputShell.addEventListener("pointerup", releasePressedState);
+      inputShell.addEventListener("pointercancel", releasePressedState);
+      inputShell.addEventListener("pointerleave", releasePressedState);
+    }
+
+    input.addEventListener("focus", () => setActive(true));
+    input.addEventListener("input", syncInputValueState);
+    input.addEventListener("blur", () => {
+      window.setTimeout(() => {
+        if (!bar.contains(document.activeElement)) setActive(false);
+      }, 0);
+    });
+    syncInputValueState();
+
+    bar.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+
+    if (clearButton) {
+      clearButton.addEventListener("click", () => {
+        input.value = "";
+        syncInputValueState();
+        input.blur();
+        setActive(false);
+        if (behavior === "inline-floating") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      });
+    }
+
+    if (fieldClearButton) {
+      fieldClearButton.addEventListener("click", () => {
+        input.value = "";
+        syncInputValueState();
+        input.focus();
+      });
+    }
+
+    if (behavior === "inline-floating") {
+      window.requestAnimationFrame(measurePromotedSticky);
+      window.addEventListener("scroll", syncPromotedSticky, { passive: true });
+      window.addEventListener("resize", measurePromotedSticky);
+      window.addEventListener("orientationchange", measurePromotedSticky);
+      window.addEventListener("pageshow", measurePromotedSticky);
+    }
+  });
 }
 
 const backButton = document.querySelector("[data-back-to-home]");

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="iOS26 AppBar" />
+    <script>
+      (() => {
+        try {
+          const nav = performance.getEntriesByType("navigation")[0];
+          let direction = sessionStorage.getItem("nav-direction") || "";
+          if (!direction && nav && nav.type === "back_forward") direction = "pop";
+          if (!direction && nav && nav.type === "navigate") direction = "push";
+          if (!direction) direction = "none";
+          document.documentElement.setAttribute("data-nav-direction", direction);
+          sessionStorage.removeItem("nav-direction");
+        } catch {
+          document.documentElement.setAttribute("data-nav-direction", "none");
+        }
+      })();
+    </script>
+    <title>Инлайновый поиск</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="search-inline">
+    <div class="app-shell">
+      <header class="appbar">
+        <button class="appbar-btn close-btn" data-back-to-home data-back-href="search.html" aria-label="Назад">
+          <img class="appbar-icon appbar-icon-back appbar-icon-toned" src="icons/chevron-left.svg" alt="" aria-hidden="true" />
+        </button>
+        <button class="appbar-btn reload-btn" id="reload-btn" aria-label="Обновить">
+          <img class="appbar-icon appbar-icon-toned" src="icons/reload.svg" alt="" aria-hidden="true" />
+        </button>
+        <h1 class="title">Инлайновый поиск</h1>
+      </header>
+
+      <main class="screen screen--search screen--search-inline">
+        <h2 class="content-title">Инлайновый поиск</h2>
+        <form class="search-bar search-bar--inline search-bar--no-clear" data-search-bar data-search-behavior="inline" action="">
+          <label class="search-input-shell search-input-shell--inline">
+            <svg class="search-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3.40918 10.4961C3.40918 6.76904 6.43896 3.73926 10.166 3.73926C13.8931 3.73926 16.9229 6.76904 16.9229 10.4961C16.9229 11.9487 16.4497 13.2935 15.6611 14.3809L19.4546 18.1826C19.6787 18.415 19.7949 18.7222 19.7949 19.0542C19.7949 19.7432 19.2886 20.2744 18.583 20.2744C18.2593 20.2744 17.9355 20.1665 17.7031 19.9258L13.8848 16.1074C12.8223 16.8296 11.5522 17.2529 10.166 17.2529C6.43896 17.2529 3.40918 14.2231 3.40918 10.4961ZM5.16895 10.4961C5.16895 13.252 7.40186 15.4932 10.166 15.4932C12.9219 15.4932 15.1631 13.252 15.1631 10.4961C15.1631 7.74023 12.9219 5.49902 10.166 5.49902C7.40186 5.49902 5.16895 7.74023 5.16895 10.4961Z" fill="currentColor"/>
+            </svg>
+            <input class="search-input" type="search" placeholder="Поиск" autocomplete="off" />
+            <button class="search-field-clear" type="button" aria-label="Очистить поиск">
+              <svg class="search-field-clear-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 16C3.63137 16 0 12.3686 0 8C0 3.62353 3.62353 0 7.99216 0C12.3686 0 16 3.62353 16 8C16 12.3686 12.3765 16 8 16ZM5.36471 11.2941C5.5451 11.2941 5.7098 11.2314 5.83529 11.1059L8 8.92549L10.1725 11.1059C10.2902 11.2314 10.4549 11.2941 10.6353 11.2941C11.0039 11.2941 11.2941 11.0039 11.2941 10.6431C11.2941 10.4627 11.2314 10.298 11.098 10.1804L8.92549 8.00784L11.1059 5.82745C11.2471 5.68627 11.302 5.5451 11.302 5.36471C11.302 5.00392 11.0118 4.72157 10.651 4.72157C10.4784 4.72157 10.3373 4.77647 10.2039 4.9098L8 7.09804L5.81176 4.91765C5.68627 4.8 5.5451 4.73725 5.36471 4.73725C5.00392 4.73725 4.72157 5.01176 4.72157 5.38039C4.72157 5.55294 4.78431 5.7098 4.9098 5.83529L7.08235 8.00784L4.9098 10.1882C4.78431 10.3059 4.72157 10.4706 4.72157 10.6431C4.72157 11.0039 5.00392 11.2941 5.36471 11.2941Z" fill="currentColor"/>
+              </svg>
+            </button>
+          </label>
+          <button class="appbar-btn search-clear-btn" type="button" aria-label="Закрыть поиск">
+            <img class="appbar-icon appbar-icon-toned" src="icons/close.svg" alt="" aria-hidden="true" />
+          </button>
+        </form>
+        <div class="cards" id="cards"></div>
+      </main>
+
+      <template id="card-template">
+        <section class="card">
+          <p>
+            <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
+            <span>Card title</span>
+          </p>
+        </section>
+      </template>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

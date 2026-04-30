@@ -1,5 +1,21 @@
-const CACHE_NAME = "ios26-topbar-v2";
-const ASSETS = ["./", "./index.html", "./styles.css", "./app.js", "./manifest.webmanifest"];
+const CACHE_NAME = "ios26-topbar-v14";
+const ASSETS = [
+  "./",
+  "./index.html",
+  "./normal.html",
+  "./color-header.html",
+  "./color-content.html",
+  "./tabbar-list.html",
+  "./appbar-playground.html",
+  "./switches.html",
+  "./search.html",
+  "./search-inline.html",
+  "./search-inline-floating.html",
+  "./search-floating.html",
+  "./styles.css",
+  "./app.js",
+  "./manifest.webmanifest"
+];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));

@@ -22,84 +22,54 @@
         }
       })();
     </script>
-    <title>iOS26 AppBar Test</title>
+    <title>Поиск</title>
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body data-page="home">
+  <body data-page="search">
     <div class="app-shell">
       <header class="appbar">
-        <button class="appbar-btn close-btn" aria-label="Закрыть">
-          <img class="appbar-icon appbar-icon-toned" src="icons/close.svg" alt="" aria-hidden="true" />
+        <button class="appbar-btn close-btn" data-back-to-home aria-label="Назад">
+          <img class="appbar-icon appbar-icon-back appbar-icon-toned" src="icons/chevron-left.svg" alt="" aria-hidden="true" />
         </button>
         <button class="appbar-btn reload-btn" id="reload-btn" aria-label="Обновить">
           <img class="appbar-icon appbar-icon-toned" src="icons/reload.svg" alt="" aria-hidden="true" />
         </button>
-        <h1 class="title">Демо</h1>
+        <h1 class="title">Поиск</h1>
       </header>
+
       <main class="screen">
-        <h2 class="content-title">Демо</h2>
+        <h2 class="content-title">Поиск</h2>
         <div class="cards">
-          <a class="nav-link" href="normal.html">
+          <a class="nav-link" href="search-inline.html">
             <section class="card">
               <p>
                 <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Обычный список</span>
+                <span>Инлайновый</span>
               </p>
             </section>
           </a>
-          <a class="nav-link" href="color-header.html">
+          <a class="nav-link" href="search-inline-floating.html">
             <section class="card">
               <p>
                 <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Цветная шапка</span>
+                <span>Инлайновый меняющий стиль</span>
               </p>
             </section>
           </a>
-          <a class="nav-link" href="color-content.html">
+          <a class="nav-link" href="search-floating.html">
             <section class="card">
               <p>
                 <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Цветные фоны</span>
-              </p>
-            </section>
-          </a>
-          <a class="nav-link" href="tabbar-list.html">
-            <section class="card">
-              <p>
-                <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Список с таббаром</span>
-              </p>
-            </section>
-          </a>
-          <a class="nav-link" href="appbar-playground.html">
-            <section class="card">
-              <p>
-                <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Настройка аппбара</span>
-              </p>
-            </section>
-          </a>
-          <a class="nav-link" href="switches.html">
-            <section class="card">
-              <p>
-                <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Свитчи</span>
-              </p>
-            </section>
-          </a>
-          <a class="nav-link" href="search.html">
-            <section class="card">
-              <p>
-                <span class="card-leading" aria-hidden="true"><img src="icons/card-star.svg" alt=""/></span>
-                <span>Поиск</span>
+                <span>Плавающий</span>
               </p>
             </section>
           </a>
         </div>
       </main>
     </div>
+
     <script src="app.js"></script>
   </body>
 </html>

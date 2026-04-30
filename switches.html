@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="iOS26 AppBar" />
+    <script>
+      (() => {
+        try {
+          const nav = performance.getEntriesByType("navigation")[0];
+          let direction = sessionStorage.getItem("nav-direction") || "";
+          if (!direction && nav && nav.type === "back_forward") direction = "pop";
+          if (!direction && nav && nav.type === "navigate") direction = "push";
+          if (!direction) direction = "none";
+          document.documentElement.setAttribute("data-nav-direction", direction);
+          sessionStorage.removeItem("nav-direction");
+        } catch {
+          document.documentElement.setAttribute("data-nav-direction", "none");
+        }
+      })();
+    </script>
+    <title>Свитчи</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body data-page="switches">
+    <div class="app-shell">
+      <header class="appbar">
+        <button class="appbar-btn close-btn" data-back-to-home aria-label="Назад">
+          <img class="appbar-icon appbar-icon-back appbar-icon-toned" src="icons/chevron-left.svg" alt="" aria-hidden="true" />
+        </button>
+        <button class="appbar-btn reload-btn" id="reload-btn" aria-label="Обновить">
+          <img class="appbar-icon appbar-icon-toned" src="icons/reload.svg" alt="" aria-hidden="true" />
+        </button>
+        <h1 class="title">Свитчи</h1>
+      </header>
+
+      <main class="screen">
+        <h2 class="content-title">Свитчи</h2>
+        <div class="cards">
+          <section class="card switch-card">
+            <label class="switch-row">
+              <span class="switch-text">Получать уведомления</span>
+              <span class="switch-control">
+                <input class="native-switch" type="checkbox" switch checked />
+                <span class="custom-switch" aria-hidden="true"></span>
+              </span>
+            </label>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
