@@ -9,6 +9,30 @@ const isStandalone =
   isEmbeddedWebView;
 document.documentElement.classList.toggle("page-color-header", page === "color-header");
 
+const readSafeAreaInsetTop = () => {
+  const probe = document.createElement("div");
+  probe.style.cssText = [
+    "position:absolute",
+    "top:0",
+    "left:0",
+    "visibility:hidden",
+    "pointer-events:none",
+    "padding-top:env(safe-area-inset-top)"
+  ].join(";");
+  document.body.appendChild(probe);
+  const inset = Number.parseFloat(getComputedStyle(probe).paddingTop) || 0;
+  probe.remove();
+  return inset;
+};
+
+const syncSearchActiveSafeTop = () => {
+  const activeSearch = document.querySelector("[data-search-bar].is-active");
+  if (activeSearch) return;
+  const safeAreaInsetTop = readSafeAreaInsetTop();
+  const resolvedTop = Math.max(safeAreaInsetTop, isStandalone ? 0 : 16);
+  document.documentElement.style.setProperty("--search-active-safe-top", `${resolvedTop}px`);
+};
+
 const detectNativeSwitch = () => {
   const testSwitch = document.createElement("input");
   testSwitch.type = "checkbox";
@@ -44,9 +68,13 @@ const syncAppViewportHeight = () => {
 };
 
 syncAppViewportHeight();
+syncSearchActiveSafeTop();
 window.addEventListener("resize", syncAppViewportHeight);
 window.addEventListener("orientationchange", syncAppViewportHeight);
 window.addEventListener("pageshow", syncAppViewportHeight);
+window.addEventListener("resize", syncSearchActiveSafeTop);
+window.addEventListener("orientationchange", syncSearchActiveSafeTop);
+window.addEventListener("pageshow", syncSearchActiveSafeTop);
 
 if (header) {
   const blurLayer = document.createElement("div");
@@ -197,8 +225,6 @@ if (searchBars.length) {
     if (!input) return;
     const behavior = bar.dataset.searchBehavior || "inline";
     let searchScrollTimer = null;
-    let activeTopLockFrame = null;
-    let activeTopLockPx = null;
 
     const scrollSearchResultsIntoPlace = () => {
       if (behavior === "inline" || !cards) return;
@@ -227,33 +253,12 @@ if (searchBars.length) {
       syncPromotedSticky();
     };
 
-    const lockActiveTop = () => {
-      if (!isStandalone || behavior === "inline") return;
-      if (activeTopLockFrame) {
-        window.cancelAnimationFrame(activeTopLockFrame);
-      }
-      activeTopLockFrame = window.requestAnimationFrame(() => {
-        if (!bar.classList.contains("is-active")) return;
-        activeTopLockPx = Math.max(0, Math.round(bar.getBoundingClientRect().top));
-        bar.style.top = `${activeTopLockPx}px`;
-        activeTopLockFrame = null;
-      });
-    };
-
     const setActive = (isActive) => {
       bar.classList.toggle("is-active", isActive);
       syncSearchChrome();
       syncPromotedSticky();
       if (!isActive) {
-        if (activeTopLockFrame) {
-          window.cancelAnimationFrame(activeTopLockFrame);
-          activeTopLockFrame = null;
-        }
-        activeTopLockPx = null;
-        bar.style.removeProperty("top");
-      }
-      if (isActive) {
-        lockActiveTop();
+        syncSearchActiveSafeTop();
       }
       if (!isActive && behavior !== "inline") {
         window.scrollTo({ top: 0, behavior: "instant" });
@@ -337,14 +342,7 @@ if (searchBars.length) {
 
     if (window.visualViewport && behavior !== "inline") {
       window.visualViewport.addEventListener("resize", () => {
-        if (bar.classList.contains("is-active")) {
-          if (isStandalone && activeTopLockPx !== null) {
-            bar.style.top = `${activeTopLockPx}px`;
-          } else {
-            lockActiveTop();
-          }
-          scrollSearchResultsIntoPlace();
-        }
+        if (bar.classList.contains("is-active")) scrollSearchResultsIntoPlace();
       });
     }
   });

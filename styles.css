@@ -1,6 +1,7 @@
 :root {
   --app-vh: 100vh;
   --statusbar-liquid-offset: 0px;
+  --search-active-safe-top: 16px;
   --bg-page: #ffffff;
   --card-bg: #ffffff;
   --card-border: rgba(255, 255, 255, 0.9);
@@ -675,7 +676,7 @@ body.scrolled .title {
 
 .search-bar--promotes.is-active {
   position: fixed;
-  top: calc(var(--statusbar-liquid-offset) + max(env(safe-area-inset-top), 16px));
+  top: calc(var(--statusbar-liquid-offset) + var(--search-active-safe-top));
   left: 0;
   width: 100%;
   margin: 0;
@@ -696,7 +697,7 @@ body.scrolled .title {
 }
 
 .search-bar--fixed.is-active {
-  top: calc(var(--statusbar-liquid-offset) + max(env(safe-area-inset-top), 16px));
+  top: calc(var(--statusbar-liquid-offset) + var(--search-active-safe-top));
   padding-top: var(--appbar-top-pad);
   z-index: 10001;
 }
