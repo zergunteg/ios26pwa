@@ -10,6 +10,11 @@ const isStandalone =
 document.documentElement.classList.toggle("page-color-header", page === "color-header");
 
 const readSafeAreaInsetTop = () => {
+  const appbarButton = header?.querySelector(".appbar-btn");
+  if (appbarButton) {
+    return Math.max(0, Math.round(appbarButton.getBoundingClientRect().top));
+  }
+
   const probe = document.createElement("div");
   probe.style.cssText = [
     "position:absolute",
@@ -28,9 +33,8 @@ const readSafeAreaInsetTop = () => {
 const syncSearchActiveSafeTop = () => {
   const activeSearch = document.querySelector("[data-search-bar].is-active");
   if (activeSearch) return;
-  const safeAreaInsetTop = readSafeAreaInsetTop();
-  const resolvedTop = safeAreaInsetTop + (isStandalone ? 0 : 16);
-  document.documentElement.style.setProperty("--search-active-safe-top", `${resolvedTop}px`);
+  const activeSearchTop = readSafeAreaInsetTop();
+  document.documentElement.style.setProperty("--search-active-safe-top", `${activeSearchTop}px`);
 };
 
 const detectNativeSwitch = () => {
@@ -254,6 +258,9 @@ if (searchBars.length) {
     };
 
     const setActive = (isActive) => {
+      if (isActive) {
+        syncSearchActiveSafeTop();
+      }
       bar.classList.toggle("is-active", isActive);
       syncSearchChrome();
       syncPromotedSticky();
