@@ -31,6 +31,7 @@ const readSafeAreaInsetTop = () => {
 };
 
 const syncSearchActiveSafeTop = () => {
+  if (document.body.classList.contains("search-chrome-collapsed")) return;
   const activeSearch = document.querySelector("[data-search-bar].is-active");
   if (activeSearch) return;
   const activeSearchTop = readSafeAreaInsetTop();
@@ -213,12 +214,133 @@ if (cards && cardTemplate) {
 
 const searchBars = Array.from(document.querySelectorAll("[data-search-bar]"));
 if (searchBars.length) {
+  let activeOverlaySource = null;
+  let searchOverlay = null;
+  let searchOverlayInput = null;
+  let searchOverlayShell = null;
+
   const syncSearchChrome = () => {
-    const shouldCollapse = searchBars.some((bar) => {
+    const shouldCollapse = Boolean(activeOverlaySource) || searchBars.some((bar) => {
       const behavior = bar.dataset.searchBehavior || "inline";
       return bar.classList.contains("is-active") && behavior !== "inline";
     });
     document.body.classList.toggle("search-chrome-collapsed", shouldCollapse);
+  };
+
+  const syncShellValueState = (shell, input) => {
+    shell?.classList.toggle("has-value", (input?.value || "").length > 0);
+  };
+
+  const focusSearchOverlayInput = () => {
+    if (!searchOverlayInput) return;
+    try {
+      searchOverlayInput.focus({ preventScroll: true });
+    } catch {
+      searchOverlayInput.focus();
+    }
+  };
+
+  const createSearchOverlay = () => {
+    if (searchOverlay) return searchOverlay;
+    const sourceBar = searchBars.find((bar) => (bar.dataset.searchBehavior || "inline") !== "inline");
+    if (!sourceBar) return null;
+
+    searchOverlay = sourceBar.cloneNode(true);
+    searchOverlay.hidden = true;
+    searchOverlay.className = "search-bar search-bar--floating search-active-overlay";
+    searchOverlay.dataset.searchBehavior = "overlay";
+    searchOverlay.removeAttribute("data-search-bar");
+    searchOverlay.setAttribute("aria-hidden", "true");
+
+    searchOverlayShell = searchOverlay.querySelector(".search-input-shell");
+    searchOverlayInput = searchOverlay.querySelector(".search-input");
+    if (searchOverlayShell) {
+      searchOverlayShell.className = "search-input-shell search-input-shell--floating";
+    }
+    if (searchOverlayInput) {
+      searchOverlayInput.value = "";
+    }
+
+    const overlayFieldClear = searchOverlay.querySelector(".search-field-clear");
+    const overlayClose = searchOverlay.querySelector(".search-clear-btn");
+    searchOverlay.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+    searchOverlayInput?.addEventListener("input", syncOverlayValueToSource);
+    overlayFieldClear?.addEventListener("click", () => {
+      if (!searchOverlayInput) return;
+      searchOverlayInput.value = "";
+      syncOverlayValueToSource();
+      focusSearchOverlayInput();
+    });
+    overlayClose?.addEventListener("click", () => {
+      if (searchOverlayInput) searchOverlayInput.value = "";
+      syncOverlayValueToSource();
+      closeSearchOverlay();
+    });
+
+    document.querySelector(".app-shell")?.appendChild(searchOverlay);
+    return searchOverlay;
+  };
+
+  const openSearchOverlay = (sourceBar) => {
+    const behavior = sourceBar.dataset.searchBehavior || "inline";
+    if (behavior === "inline") return false;
+
+    const overlay = createSearchOverlay();
+    if (!overlay || !searchOverlayInput) return false;
+
+    const sourceInput = sourceBar.querySelector(".search-input");
+    const sourceShell = sourceBar.querySelector(".search-input-shell");
+    syncSearchActiveSafeTop();
+    activeOverlaySource = sourceBar;
+    searchOverlayInput.value = sourceInput?.value || "";
+    syncShellValueState(searchOverlayShell, searchOverlayInput);
+    syncShellValueState(sourceShell, sourceInput);
+
+    overlay.hidden = false;
+    overlay.removeAttribute("aria-hidden");
+    overlay.classList.add("is-active");
+    syncSearchChrome();
+
+    focusSearchOverlayInput();
+    window.requestAnimationFrame(() => {
+      if (document.activeElement !== searchOverlayInput) focusSearchOverlayInput();
+    });
+
+    return true;
+  };
+
+  const closeSearchOverlay = () => {
+    if (!searchOverlay || !activeOverlaySource) return;
+    const sourceBar = activeOverlaySource;
+    const sourceInput = sourceBar.querySelector(".search-input");
+    const sourceShell = sourceBar.querySelector(".search-input-shell");
+    if (sourceInput && searchOverlayInput) {
+      sourceInput.value = searchOverlayInput.value;
+      syncShellValueState(sourceShell, sourceInput);
+    }
+
+    activeOverlaySource = null;
+    searchOverlayInput?.blur();
+    searchOverlay.classList.remove("is-active");
+    searchOverlay.setAttribute("aria-hidden", "true");
+    window.setTimeout(() => {
+      if (!activeOverlaySource && searchOverlay) searchOverlay.hidden = true;
+    }, 180);
+    syncSearchChrome();
+    syncSearchActiveSafeTop();
+  };
+
+  const syncOverlayValueToSource = () => {
+    if (!activeOverlaySource || !searchOverlayInput) return;
+    const sourceInput = activeOverlaySource.querySelector(".search-input");
+    const sourceShell = activeOverlaySource.querySelector(".search-input-shell");
+    if (sourceInput) {
+      sourceInput.value = searchOverlayInput.value;
+      syncShellValueState(sourceShell, sourceInput);
+    }
+    syncShellValueState(searchOverlayShell, searchOverlayInput);
   };
 
   searchBars.forEach((bar) => {
@@ -228,22 +350,6 @@ if (searchBars.length) {
     const fieldClearButton = bar.querySelector(".search-field-clear");
     if (!input) return;
     const behavior = bar.dataset.searchBehavior || "inline";
-    let searchScrollTimer = null;
-
-    const scrollSearchResultsIntoPlace = () => {
-      if (behavior === "inline" || !cards) return;
-      if (searchScrollTimer) window.clearTimeout(searchScrollTimer);
-
-      searchScrollTimer = window.setTimeout(() => {
-        window.requestAnimationFrame(() => {
-          const barBottom = bar.getBoundingClientRect().bottom;
-          const cardsTop = cards.getBoundingClientRect().top + window.scrollY;
-          const targetTop = Math.max(0, Math.round(cardsTop - barBottom - 20));
-          window.scrollTo({ top: targetTop, behavior: "auto" });
-          searchScrollTimer = null;
-        });
-      }, 180);
-    };
 
     const getStickyTop = () => Number.parseFloat(getComputedStyle(bar).top) || 0;
     const syncPromotedSticky = () => {
@@ -258,6 +364,15 @@ if (searchBars.length) {
     };
 
     const setActive = (isActive) => {
+      if (behavior !== "inline") {
+        if (isActive) {
+          openSearchOverlay(bar);
+        } else if (activeOverlaySource === bar) {
+          closeSearchOverlay();
+        }
+        return;
+      }
+
       if (isActive) {
         syncSearchActiveSafeTop();
       }
@@ -283,6 +398,12 @@ if (searchBars.length) {
 
       inputShell.addEventListener("pointerdown", (event) => {
         if (event.target.closest(".search-field-clear")) return;
+        if (behavior !== "inline") {
+          event.preventDefault();
+          inputShell.classList.add("is-pressed");
+          openSearchOverlay(bar);
+          return;
+        }
         setActive(true);
         inputShell.classList.add("is-pressed");
         input.focus();
@@ -293,13 +414,16 @@ if (searchBars.length) {
     }
 
     input.addEventListener("focus", () => {
-      if (behavior !== "inline" && window.scrollY === 0) {
-        window.scrollTo({ top: 1, behavior: "instant" });
+      if (behavior !== "inline") {
+        openSearchOverlay(bar);
+        input.blur();
+        return;
       }
       setActive(true);
     });
     input.addEventListener("input", syncInputValueState);
     input.addEventListener("blur", () => {
+      if (behavior !== "inline") return;
       window.setTimeout(() => {
         if (!bar.contains(document.activeElement)) setActive(false);
       }, 0);
@@ -315,10 +439,6 @@ if (searchBars.length) {
         input.value = "";
         syncInputValueState();
         input.blur();
-        if (searchScrollTimer) {
-          window.clearTimeout(searchScrollTimer);
-          searchScrollTimer = null;
-        }
         setActive(false);
       });
     }
@@ -327,7 +447,9 @@ if (searchBars.length) {
       fieldClearButton.addEventListener("click", () => {
         input.value = "";
         syncInputValueState();
-        input.focus();
+        if (behavior === "inline") {
+          input.focus();
+        }
       });
     }
 
@@ -339,19 +461,6 @@ if (searchBars.length) {
       window.addEventListener("pageshow", measurePromotedSticky);
     }
 
-    if (behavior !== "inline") {
-      window.addEventListener("scroll", () => {
-        if (bar.classList.contains("is-active") && window.scrollY === 0) {
-          window.scrollTo({ top: 1, behavior: "instant" });
-        }
-      }, { passive: true });
-    }
-
-    if (window.visualViewport && behavior !== "inline") {
-      window.visualViewport.addEventListener("resize", () => {
-        if (bar.classList.contains("is-active")) scrollSearchResultsIntoPlace();
-      });
-    }
   });
 }
 

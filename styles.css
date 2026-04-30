@@ -702,8 +702,40 @@ body.scrolled .title {
   z-index: 10001;
 }
 
+.search-active-overlay {
+  position: fixed;
+  top: var(--statusbar-liquid-offset);
+  left: 0;
+  width: 100%;
+  margin: 0;
+  padding-top: var(--search-active-safe-top);
+  z-index: 10002;
+  background: var(--appbar-overlay-gradient);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition:
+    opacity 180ms ease,
+    transform 300ms cubic-bezier(0.4, 0.1, 0.2, 1);
+}
+
+.search-active-overlay.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.search-active-overlay[hidden] {
+  display: none;
+}
+
 body.search-chrome-collapsed {
   overscroll-behavior-y: none;
+}
+
+body.search-chrome-collapsed .search-bar:not(.search-active-overlay) {
+  opacity: 0;
+  pointer-events: none;
 }
 
 body.search-chrome-collapsed .appbar {
@@ -722,7 +754,7 @@ body.search-chrome-collapsed {
   padding-right: 16px;
 }
 
-.screen--search-inline .search-bar:not(.is-active) {
+.screen--search-inline .search-bar:not(.is-active):not(.is-stuck) {
   margin-top: 0;
   padding-top: 12px;
 }
