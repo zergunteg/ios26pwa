@@ -675,7 +675,7 @@ body.scrolled .title {
 
 .search-bar--promotes.is-active {
   position: fixed;
-  top: calc(var(--statusbar-liquid-offset) + env(safe-area-inset-top));
+  top: calc(var(--statusbar-liquid-offset) + max(env(safe-area-inset-top), 16px));
   left: 0;
   width: 100%;
   margin: 0;
