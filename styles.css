@@ -761,6 +761,11 @@ body.search-chrome-collapsed {
   margin-bottom: 12px;
 }
 
+.screen--search-inline .search-bar--no-clear {
+  margin-top: 0;
+  padding-top: 0;
+}
+
 .screen--search-inline .search-bar:not(.is-active) {
   margin-top: 0;
   padding-top: 0;
