@@ -249,7 +249,12 @@ if (searchBars.length) {
       inputShell.addEventListener("pointerleave", releasePressedState);
     }
 
-    input.addEventListener("focus", () => setActive(true));
+    input.addEventListener("focus", () => {
+      if (behavior !== "inline" && window.scrollY === 0) {
+        window.scrollTo({ top: 1, behavior: "instant" });
+      }
+      setActive(true);
+    });
     input.addEventListener("input", syncInputValueState);
     input.addEventListener("blur", () => {
       window.setTimeout(() => {
