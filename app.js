@@ -290,6 +290,14 @@ if (searchBars.length) {
       window.addEventListener("pageshow", measurePromotedSticky);
     }
 
+    if (behavior !== "inline") {
+      window.addEventListener("scroll", () => {
+        if (bar.classList.contains("is-active") && window.scrollY === 0) {
+          window.scrollTo({ top: 1, behavior: "instant" });
+        }
+      }, { passive: true });
+    }
+
   });
 }
 
