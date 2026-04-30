@@ -676,11 +676,11 @@ body.scrolled .title {
 
 .search-bar--promotes.is-active {
   position: fixed;
-  top: calc(var(--statusbar-liquid-offset) + var(--search-active-safe-top));
+  top: var(--statusbar-liquid-offset);
   left: 0;
   width: 100%;
   margin: 0;
-  padding-top: var(--appbar-top-pad);
+  padding-top: var(--search-active-safe-top);
   z-index: 10001;
   background: var(--appbar-overlay-gradient);
 }
@@ -697,8 +697,8 @@ body.scrolled .title {
 }
 
 .search-bar--fixed.is-active {
-  top: calc(var(--statusbar-liquid-offset) + var(--search-active-safe-top));
-  padding-top: var(--appbar-top-pad);
+  top: var(--statusbar-liquid-offset);
+  padding-top: var(--search-active-safe-top);
   z-index: 10001;
 }
 
