@@ -675,11 +675,11 @@ body.scrolled .title {
 
 .search-bar--promotes.is-active {
   position: fixed;
-  top: var(--statusbar-liquid-offset);
+  top: calc(var(--statusbar-liquid-offset) + env(safe-area-inset-top));
   left: 0;
   width: 100%;
   margin: 0;
-  padding-top: max(env(safe-area-inset-top), var(--appbar-top-pad), 16px);
+  padding-top: var(--appbar-top-pad);
   z-index: 10001;
   background: var(--appbar-overlay-gradient);
 }
@@ -696,8 +696,8 @@ body.scrolled .title {
 }
 
 .search-bar--fixed.is-active {
-  top: var(--statusbar-liquid-offset);
-  padding-top: max(env(safe-area-inset-top), var(--appbar-top-pad), 16px);
+  top: calc(var(--statusbar-liquid-offset) + env(safe-area-inset-top));
+  padding-top: var(--appbar-top-pad);
   z-index: 10001;
 }
 
@@ -712,12 +712,16 @@ body.search-chrome-collapsed .appbar {
   transition: transform 300ms cubic-bezier(0.4, 0.1, 0.2, 1), opacity 180ms ease;
 }
 
+body.search-chrome-collapsed {
+  overscroll-behavior-y: contain;
+}
+
 .screen--search {
   padding-left: 16px;
   padding-right: 16px;
 }
 
-.screen--search-inline .search-bar {
+.screen--search-inline .search-bar:not(.is-active) {
   margin-top: 0;
   padding-top: 12px;
 }

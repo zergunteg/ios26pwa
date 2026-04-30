@@ -1,4 +1,4 @@
-const CACHE_NAME = "ios26-topbar-v15";
+const CACHE_NAME = "ios26-topbar-v16";
 const ASSETS = [
   "./",
   "./index.html",

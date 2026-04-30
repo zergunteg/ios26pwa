@@ -196,17 +196,21 @@ if (searchBars.length) {
     const fieldClearButton = bar.querySelector(".search-field-clear");
     if (!input) return;
     const behavior = bar.dataset.searchBehavior || "inline";
+    let searchScrollTimer = null;
 
     const scrollSearchResultsIntoPlace = () => {
       if (behavior === "inline" || !cards) return;
-      window.requestAnimationFrame(() => {
-        const rootStyle = getComputedStyle(document.documentElement);
-        const barTop = Number.parseFloat(rootStyle.getPropertyValue("--statusbar-liquid-offset")) || 0;
-        const barBottom = barTop + bar.offsetHeight;
-        const cardsTop = cards.getBoundingClientRect().top + window.scrollY;
-        const targetTop = Math.max(0, Math.round(cardsTop - barBottom - 20));
-        window.scrollTo({ top: targetTop, behavior: "smooth" });
-      });
+      if (searchScrollTimer) window.clearTimeout(searchScrollTimer);
+
+      searchScrollTimer = window.setTimeout(() => {
+        window.requestAnimationFrame(() => {
+          const barBottom = bar.getBoundingClientRect().bottom;
+          const cardsTop = cards.getBoundingClientRect().top + window.scrollY;
+          const targetTop = Math.max(0, Math.round(cardsTop - barBottom - 20));
+          window.scrollTo({ top: targetTop, behavior: "auto" });
+          searchScrollTimer = null;
+        });
+      }, 180);
     };
 
     const getStickyTop = () => Number.parseFloat(getComputedStyle(bar).top) || 0;
@@ -273,6 +277,10 @@ if (searchBars.length) {
         input.value = "";
         syncInputValueState();
         input.blur();
+        if (searchScrollTimer) {
+          window.clearTimeout(searchScrollTimer);
+          searchScrollTimer = null;
+        }
         setActive(false);
       });
     }
@@ -301,6 +309,11 @@ if (searchBars.length) {
       }, { passive: true });
     }
 
+    if (window.visualViewport && behavior !== "inline") {
+      window.visualViewport.addEventListener("resize", () => {
+        if (bar.classList.contains("is-active")) scrollSearchResultsIntoPlace();
+      });
+    }
   });
 }
 
