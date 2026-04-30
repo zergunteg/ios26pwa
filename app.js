@@ -225,7 +225,6 @@ if (searchBars.length) {
       bar.classList.toggle("is-active", isActive);
       syncSearchChrome();
       syncPromotedSticky();
-      if (isActive) scrollSearchResultsIntoPlace();
     };
 
     const syncInputValueState = () => {
