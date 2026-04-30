@@ -674,7 +674,7 @@ body.scrolled .title {
 
 .search-bar--promotes.is-active {
   position: fixed;
-  top: calc(var(--statusbar-liquid-offset) + var(--vv-offset, 0px));
+  top: var(--statusbar-liquid-offset);
   left: 0;
   width: 100%;
   margin: 0;
@@ -695,7 +695,7 @@ body.scrolled .title {
 }
 
 .search-bar--fixed.is-active {
-  top: calc(var(--statusbar-liquid-offset) + var(--vv-offset, 0px));
+  top: var(--statusbar-liquid-offset);
   padding-top: max(env(safe-area-inset-top), var(--appbar-top-pad), 16px);
   z-index: 10001;
 }
